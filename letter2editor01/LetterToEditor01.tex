@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,upgreek}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{units}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\newtheorem{thm}{Theorem}
+\oddsidemargin .5cm
+\addtolength{\topmargin}{-2cm}
+\addtolength{\textheight}{4cm}
+\textwidth 15cm
+
+
+\begin{document}
+\vspace*{-1cm}
+\begin{figure}
+Editor-in-Chief \\ 
+ACM Transactions on Cyber-Physical Systems \\
+\vspace*{1.5cm}
+\flushright \today\\[11pt] % Date
+200 S. 33rd Street  \\ % Address
+Philadelphia, PA 19104
+\vspace*{1.0cm}
+\end{figure}
+
+
+\noindent Dear Dr. Tei-Wei Kuo,
+
+\vspace{0.5cm}
+\noindent\textbf{Regarding:} Submission of revised manuscript TCPS-2016-0068 ``Data Predictive Control for Cyber-Physical Energy Systems''
+\vspace{0.5cm}
+
+\noindent The authors would like to thank you and the Reviewers for the constructive and helpful comments on our manuscript. We have edited our manuscript accordingly. A detailed response to all of the Reviewers' comments is provided below. We are looking forward to any further feedback.
+\vspace{0.25cm}
+
+\noindent Kind regards,
+
+\vspace{0.5cm}
+
+\noindent \textit{Achin Jain}
+
+\noindent \textit{Madhur Behl}
+
+\noindent \textit{Rahul Mangharam}
+
+\newpage
+
+\noindent \textbf{Reviewer 1}
+
+\vspace*{0.5cm}
+\noindent \emph{``1. Sec 3. 
+``We then partition the partitions again; this is called recursive partitioning, until finally we get to chunks of the data space which are so tame that we can fit simple models to them.''
+Quote from Shalizi's CMU stats 350 course notes? Please paraphrase or refer.''}
+
+\vspace*{0.25cm}
+\color{blue}
+\noindent We have now rephrased the first paragraph in Sec. 3.
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \emph{``2. Fig 6. - text needs correction.''}
+
+\vspace*{0.25cm}
+\color{blue}
+\noindent We are not sure what correction is being referred to here.
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \emph{``3. MPC - expand on first use.''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent Corrected.
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \emph{``4. I am not sure which latex template was used but the references at the end are not numbered!''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent We are using the right template. The TCPS template shows the references without numbering.
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \textbf{Reviewer 2}
+
+\vspace*{0.5cm}
+\noindent\emph{``1. The DR models are not very clearly stated. The authors mostly formulate the DR problem by means of standard optimization methods, but the fundamentals of the physical operation of the grid are missing to a large extent. I bring up this point as in the abstract the authors themselves say that their methods respect the underlying physics of the problem. If power flow constraints and OPF can be incorporated into this learning analysis then it will be a fantastic contribution.''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent The focus of the paper is on the consumer side of the Demand Response - the central issue we address is that traditional modeling of demand-side power consumption by buildings has required time and cost prohibitive first principle-based models. Our work uses data-driven models that allow for closed-loop control but at a fraction of the cost and time. Hence, the underlying physical models refer to the physical operation of the buildings and not the physical operation of the grid as the Reviewer suggests. We have discussed the issues with modeling of the buildings in context of DR in detail in Sec.~1 and 2, and have addressed those in Sec.~3 through Sec.~7.
+
+We focus on end-user demand response because such users are traditionally not able to adapt to the 86x intra-day peak-to-average price volatility. DR-Advisor, a data-driven demand response recommendation system, described in this paper, enables such energy flexibility for a large variety of building types and requires very little time and effort (costing less than hundred dollars per building, and 30 minutes of one-time compute time).  
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \emph{``2. The case studies are interesting, but the results provide inadequate insights on DR. For example, what is the total installed capacity in the campus buildings that were monitored in the tests? What kind of variability do they usually exhibit in their consumption patterns? Can those patterns be cited or shown? If not, was there any prior analysis done on that data? These details are missing.''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent We would like to clarify that, in our manuscript, we used the real building data only for predictions and model validation. In this case, we have modeled over 1.2 Million sq. ft. using real building historic data (as shown in Fig 10 and Table II). As stated explicitly, the control synthesis problem was conducted on an EnergyPlus model for which we have closed-loop control for the building and its zones. EnergyPlus is the primary building modeling tool developed by the US Department of Energy, using detailed and accurate physics-based models for realistic buildings. The application of Data Predictive Control to real buildings is part of our ongoing work and facilities would want some credibility, as a publication in TCPS would provide, before allowing us to execute a new approach on real buildings. 
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \emph{``3. How can this method be scaled up from campus level DR to a more spatially distributed DR application? For example, for an entire neighborhood or state?''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent We pointed out in Sec.~1 that one of the biggest advantages of using data-driven approach to DR is the ease in scalability. Since the same approach can be applied to any - small to large scale, commercial to residential buildings, one can imagine each end user to have their own DR-Advisor software instance to maximize their financial incentives. The data structures used in our work, regression trees and random forests, can churn through millions of data points, deal with missing data and outliers effectively for several millions of data points for each building. Unlike traditional first principles-based modeling approaches, which require months of data gathering from diverse sources to develop physics-based or reduced-order building models, our approach just requires historic building data on energy and power.
+\color{black}
+
+\vspace*{0.5cm}
+\noindent \textbf{Reviewer 3}
+
+\vspace*{0.5cm}
+\noindent \emph{``1. The introduction is fine, but the presentation is too US-focused, in my opinion. I would move the related work to the introduction section and expand it, since there is plenty of space for that.''}
+
+\color{blue}
+\vspace*{0.25cm}
+\noindent Thank you for your constructive comment. We have described US markets in the PJM grid (which serves 61 million customers and has 183.6 gigawatts of generating capacity), is the world's largest single energy market, and is the largest Demand Response market in the world. We have described the price volatility examples from the PJM market only but similar price volatility is seen in Australia and Western Europe, for example. The approach presented is universal and applicable to most energy markets across the world. We have added important references to the intro and also maintained a dedicated related work section. As our research is focused on buildings and demand side energy management, the details of the energy market structure is orthogonal to the issues addressed here.
+\color{black}
+
+\end{document}

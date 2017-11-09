@@ -1,0 +1,11 @@
+*.zip
+*.bbl
+*.blg
+*.log
+*.aux
+*.out
+*.synctex.gz
+*.pdf
+*.thm
+*.DS_Store
+*.m~

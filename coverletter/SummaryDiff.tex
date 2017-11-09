@@ -1,0 +1,31 @@
+\documentclass[11pt,stdletter,dateno]{newlfm}
+
+\usepackage{charter} % Use the Charter font for the document text
+\usepackage{paralist}
+\usepackage{graphicx}
+
+\newsavebox{\Luiuc}\sbox{\Luiuc}{\parbox[b]{1in}{\vspace{0.5in}
+\includegraphics[width=1.2\linewidth]{logo.png}}} % Company/institution logo at the top left of the page
+\makeletterhead{Uiuc}{\Lheader{\usebox{\Luiuc}}}
+\lthUiuc % Print the company/institution logo
+
+\begin{document}
+\begin{newlfm}
+\begin{center}
+\textbf{Summary of differences between ICCPS and TCPS manuscripts}
+\end{center}
+\vspace{1cm}
+
+In our new manuscript titled `Data Predictive Control for Cyber-Physical Energy Systems', we include the following new contributions and case studies in addition to a summary of the ICCPS results (Sec.~1-4, 7.1-7.5):
+\begin{enumerate}
+\item \textbf{Multi-variate output auto-regressive tree (RT) based algorithm}:
+In Sec.~5 of the manuscript, we present a method for constructing a multi-variate output predictive model using regression trees. This is done by modifying the variable selection and splitting criteria at the nodes of the regression tree. This multi-output tree enables us to implement receding horizon control (RHC) as the prediction can be made for multiple steps.
+\item \textbf{Data Predictive Control with Regression Trees}:
+In Sec.~6, we extend model based control algorithm with RT (mbCRT) and present a data predictive control with regression trees (DPCRT) algorithm for finite receding horizon control. DPCRT is first of its kind that enables closed loop control synthesis and finite RHC with regression trees. Much like MPC, DPCRT optimizes a cost function subject to the dynamics of the system and the constraints over a finite horizon of time, but it obviates the need of complex physics-based models.
+\item \textbf{Case Studies}:
+The proposed modeling and data predictive control algorithms are comprehensively tested using a mix of real building data and high fidelity virtual building test-beds. In the case study for peak power curtailment of a large office building in Sec.~7.6, we show how DPCRT exploits its predictive capability in reducing the peak power consumption while maintaining a good thermal comfort. This is a significant improvement over mbCRT which leads to a much higher peak power and also causes a jaggy behavior in the control strategy due to single step control.
+\end{enumerate}
+
+\end{newlfm}
+
+\end{document}

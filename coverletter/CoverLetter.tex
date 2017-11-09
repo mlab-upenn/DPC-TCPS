@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Long Lined Cover Letter
+% LaTeX Template
+% Version 1.0 (1/6/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Matthew J. Miller
+% http://www.matthewjmiller.net/howtos/customized-cover-letter-scripts/
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt,stdletter,dateno,sigleft]{newlfm} % Extra options: 'sigleft' for a left-aligned signature, 'stdletternofrom' to remove the from address, 'letterpaper' for US letter paper - consult the newlfm class manual for more options
+
+\usepackage{charter} % Use the Charter font for the document text
+\usepackage{paralist}
+\usepackage{graphicx}
+
+\newsavebox{\Luiuc}\sbox{\Luiuc}{\parbox[b]{1in}{\vspace{0.5in}
+\includegraphics[width=1.2\linewidth]{logo.png}}} % Company/institution logo at the top left of the page
+\makeletterhead{Uiuc}{\Lheader{\usebox{\Luiuc}}}
+
+\newlfmP{sigsize=5pt} % Slightly decrease the height of the signature field
+%\newlfmP{addrfromphone} % Print a phone number under the sender's address
+\newlfmP{addrfromemail} % Print an email address under the sender's address
+%\PhrPhone{Phone} % Customize the "Telephone" text
+\PhrEmail{Email} % Customize the "E-mail" text
+\lthUiuc % Print the company/institution logo
+
+%----------------------------------------------------------------------------------------
+%	YOUR NAME AND CONTACT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\namefrom{Dr. Madhur Behl \vspace{10pt} \newline On behalf of all authors} % Name
+
+\addrfrom{
+\today\\[11pt] % Date
+200 S. 33rd Street  \\ % Address
+Philadelphia, PA 19107
+}
+
+%\phonefrom{(000) 111-1111} % Phone number
+
+\emailfrom{mb2kg@virginia.edu, mbehl@seas.upenn.edu} % Email address
+
+%----------------------------------------------------------------------------------------
+%	ADDRESSEE AND GREETING/CLOSING
+%----------------------------------------------------------------------------------------
+
+\greetto{Dear Editor,} % Greeting text
+\closeline{Sincerely, \vspace{5pt} \newline \includegraphics[scale=0.2]{sign.png}} % Closing text
+
+%\nameto{Professor J. Yan} % Addressee of the letter above the to address
+
+\addrto{
+Editor-in-Chief \\ % To address
+ACM Transactions on Cyber-Physical Systems 
+}
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\begin{newlfm}
+
+We are very excited to have been given the opportunity for an invited journal submission.
+Please find attached our manuscript ``Data Predictive Control for Cyber-Physical Energy Systems'', which we would like to submit for publication in the ACM Transactions on Cyber-Physical Systems (ICCPS special section), along with our response letter to the Reviewers' comments.
+
+This paper describes a framework and a tool for implementing data-driven control-oriented modeling, in the context of large scale energy systems such as commercial buildings. A big challenge with such cyber-physical systems is the difficulty in successfully modeling the dynamics of the underlying physical system. We present a new class of regression trees based algorithms which rely on historical data to build predictive models of the system which are then used for closed-loop control synthesis.
+
+Please find along with this letter the following files
+\begin{enumerate}
+\item New Manuscript				: \texttt{TCPS.pdf}
+\item Old Manuscript				: \texttt{ICCPS.pdf}
+\item Summary of Differences between the two papers : \texttt{SummaryDiff.pdf}
+\item Detailed Differences between the two papers :  \texttt{DetailedDiff.pdf}
+%\item Latex Source Files			: \texttt{LatexSourceFiles.zip}
+
+\end{enumerate}
+
+Possible reviewers for this manuscript are: Alberto Sangiovanni-Vincentelli (UC Berkeley), Kamin Whitehouse (U. of Virginia), Mohammad Al Faruque (UC Irvine), Le Xie (Texas A\& M), and Krithi Ramamritham (IIT, Bombay).
+
+On the behalf of all the authors, I thank you for your consideration.
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+
+%%\psitem{On behalf of all authors}
+%\encllist{Letter for reviewers\\
+%   Revised Manuscript}
+\end{newlfm}
+\end{document}

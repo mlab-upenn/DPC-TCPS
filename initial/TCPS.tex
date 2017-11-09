@@ -1,0 +1,225 @@
+\documentclass[prodmode,acmtcps]{acmsmall}
+
+% Metadata Information
+\acmVolume{9}
+\acmNumber{4}
+\acmArticle{39}
+\acmYear{2016}
+\acmMonth{7}
+
+\usepackage{graphicx}
+%\graphicspath{{figs/}}
+\usepackage{paralist}
+\usepackage{todonotes}  %\newcommand{\todo}[][a]{}
+\usepackage{color}
+\usepackage{epstopdf}
+\usepackage{subfigure}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{cool}  % COntext-Oriented math for LaTeX
+\usepackage{mleftright}  % Commands \mleft and \mright
+\usepackage{booktabs}
+%\usepackage{subfloat}
+\usepackage[per-mode=symbol]{siunitx}
+\usepackage{url}
+
+\usepackage{hyperref}
+\hypersetup{citecolor=blue, colorlinks=true}
+\usepackage[font=small]{caption}
+\usepackage{cite}
+
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks
+
+\usepackage[amsmath,thmmarks,thref]{ntheorem}
+\usepackage{algorithm,algpseudocode}
+\theoremstyle{definition}
+\newtheorem{observation}{Observation}
+\usepackage{truonglatexdefs}
+
+\usepackage{enumitem, kantlipsum}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzset{
+  treenode/.style = {align=center, inner sep=0pt, text centered},
+  branch_c/.style = {treenode, circle, black, draw=black,
+    text width=1.5em, very thick},  
+  branch_l/.style = {treenode, circle, blue!50!gray!, draw=blue!50!gray!,
+    text width=1.5em, very thick},
+  branch_r/.style = {treenode, circle, red!50!gray!, draw=red!50!gray!, 
+    text width=1.5em, very thick},
+}
+
+%\newcommand{\tableref}[1]{Table~\ref{tab:#1}}
+%\newcommand{\figref}[1]{Fig.~\ref{fig:#1}}
+%\newcommand{\listref}[1]{Listing~\ref{list:#1}}
+% Clever references -- SHOULD BE LOADED LAST
+% Generic commands: \cref and \Cref
+% Seems incompatible with `algorithmic' from algorithms bundle, but can be used with `algorithmicx' (e.g. `algpseudocode').
+%\usepackage[capitalise]{cleveref}
+%\newcommand{\vref}[1]{\cref{#1}}
+% When using \namecref, cleveref capitalizes the first character if the option capitalise is used, which I don't want.  So use \lcnamecref instead.
+
+%\setlength{\textheight}{9.65in}
+\setlength{\textwidth}{6.4in}
+%\setlength{\columnsep}{0.3125in}
+%\setlength{\topmargin}{-.25in}
+%\setlength{\headheight}{-.1in}
+%\setlength{\headsep}{0in}
+%\setlength{\parskip}{0cm}
+%\setlength{\parindent}{1pc}
+%\setlength{\partopsep}{0pt}
+\setlength{\oddsidemargin}{-.005in}
+\setlength{\evensidemargin}{-.005in}
+%
+%\setlength{\abovedisplayskip}{0pt}
+%\setlength{\belowdisplayskip}{0pt}
+%\setlength{\abovedisplayshortskip}{0pt}
+%\setlength{\belowdisplayshortskip}{0pt}
+
+\linespread{0.96}
+%\usepackage{balance}
+
+
+%\usepackage{etoolbox}
+%\makeatletter
+%\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
+%\makeatother
+
+%\apptocmd{\thebibliography}{\small}{}{}
+
+\begin{document}
+% Page heads
+\markboth{A. Jain et al.}{Data Predictive Control for Cyber-Physical Energy Systems}
+
+% Title portion
+\title{Data Predictive Control for Cyber-Physical Energy Systems}
+\author{ACHIN JAIN
+\affil{University of Pennsylvania}
+MADHUR BEHL
+\affil{University of Virginia}
+RAHUL MANGHARAM
+\affil{University of Pennsylvania}}
+
+% NOTE! Affiliations placed here should be for the institution where the
+%       BULK of the research was done. If the author has gone to a new
+%       institution, before publication, the (above) affiliation should NOT be changed.
+%       The authors 'current' address may be given in the "Author's addresses:" block (below).
+%       So for example, Mr. Abdelzaher, the bulk of the research was done at UIUC, and he is
+%       currently affiliated with NASA.
+
+\begin{abstract}
+
+
+Decisions on how best to optimize today's energy systems operations are becoming ever so complex and conflicting such that model-based predictive control algorithms must play a key role. However, learning dynamical models of energy consuming systems such as buildings, using grey/white box approaches is very cost and time prohibitive.
+Demand response (DR) is becoming increasingly important as the volatility on the grid continues to increase.
+%Current DR approaches are completely manual and rule-based or involve deriving first principles based models which are extremely cost and time prohibitive to build.
+We consider the problem of data-driven end-user demand response and peak power reduction for large buildings which involves predicting the demand response baseline, evaluating fixed rule based DR strategies, synthesizing DR control actions, and reducing the peak power consumption.
+We provide a model based control with regression trees algorithm (mbCRT), which allows us to perform closed-loop control for DR strategy synthesis for large commercial buildings. Our data-driven control synthesis algorithm outperforms rule-based DR by 17\% for a large DoE commercial reference building and leads to a curtailment of $380\si{\kilo\watt}$ and over \$45,000 in DR revenue.
+A data predictive control with regression trees (DPCRT) algorithm, is also presented. DPCRT is a finite receding horizon method, using which the building operator can optimally trade off peak power reduction against thermal comfort without having to learn white/grey box models of the systems dynamics. 
+Our methods have been integrated into an open source tool called DR-Advisor, which acts as a recommender system for the building's facilities manager and provides suitable control actions to meet the desired load curtailment while maintaining operations and maximizing the economic reward. DR-Advisor achieves 92.8\% to 98.9\% prediction accuracy for 8 buildings on Penn's campus. We compare DR-Advisor with other data driven methods and rank $2^{nd}$ on ASHRAE's benchmarking data-set for energy prediction.
+\end{abstract}
+
+
+%
+% The code below should be generated by the tool at
+% http://dl.acm.org/ccs.cfm
+% Please copy and paste the code instead of the example below. 
+%
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10010147.10010257.10010293.10003660</concept_id>
+<concept_desc>Computing methodologies~Classification and regression trees</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computing methodologies~Classification and regression trees}
+
+
+%
+% End generated code
+%
+
+% We no longer use \terms command
+%\terms{Design, Algorithms, Performance}
+
+\keywords{Machine learning; Predictive control; Cyber-physical Systems; Demand response; Peak power reduction}
+
+\acmformat{Achin Jain, Madhur Behl and Rahul Mangharam, 2016. Data Predictive Control for Cyber-Physical Energy Systems.}
+
+% At a minimum you need to supply the author names, year and a title.
+% IMPORTANT:
+% Full first names whenever they are known, surname last, followed by a period.
+% In the case of two authors, 'and' is placed between them.
+% In the case of three or more authors, the serial comma is used, that is, all author names
+% except the last one but including the penultimate author's name are followed by a comma,
+% and then 'and' is placed before the final author's name.
+% If only first and middle initials are known, then each initial
+% is followed by a period and they are separated by a space.
+% The remaining information (journal title, volume, article number, date, etc.) is 'auto-generated'.
+
+\begin{bottomstuff}
+Author's addresses: {A. Jain {and} R. Mangharam, Department of Electrical and Systems Engineering,
+University of Pennsylvania; M. Behl,
+Department of Computer Science, University of Virginia.}
+\end{bottomstuff}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:intro}
+\input{introduction.tex}
+
+\section{Problem Definition}
+\label{sec:problem}
+\input{problem.tex}
+
+%\section{Learning regression trees}
+%\label{sec:rtree}
+%\input{trees.tex}
+
+\section{Data-Driven Demand Response}
+\label{sec:drtree}
+\input{datadr.tex}
+
+\section{Data-Driven Control Synthesis}
+\label{sec:drsyn}
+\input{DRsynthesis.tex}
+
+\section{Regression trees with multi-variate output}
+\label{S:decision_tree}
+\input{DecisionTrees.tex}
+
+\section{Data predictive control} 
+\label{S:control_tree}
+\input{ControlTrees.tex}
+
+\section{Case Study}
+\label{sec:case}
+\input{case.tex}
+
+\section{Related Work}
+\label{sec:related}
+\input{related.tex}
+\label{S:related_work}
+\input{Literature.tex}
+
+\section{Conclusion}
+\label{sec:discussion}
+\input{conclusion.tex}
+
+
+%\let\secfnt\undefined
+%\newfont{\secfnt}{ptmb8t at 10pt}
+
+\bibliographystyle{abbrv}
+\bibliography{references,ref_buildsys,newrefs}
+
+\end{document}
+
+

@@ -1,0 +1,146 @@
+Our goal is to construct data-driven functional models that relates the value of the response variable, say power consumption, $\mathcal{P}$ with the values of the predictor variables or features $[\mathbb{X}^1,\dots, \mathbb{X}^n]$ which can include weather data, set-point information and building schedules.
+Regression tree based methods are predominantly univariate output, i.e. defined only for single output variable. We describe a splitting criteria for the trees which enables us to predict multiple outputs \cite{StruyfDzeroski2005}. 
+If we consider these new outputs as the future states of the single output system, the multi-output tree enables us to implement receding horizon control as the prediction can be made for multiple steps. For example, consider a training dataset with information about the building states like zone temperatures, control set points and ambient weather. The output we are interested in is the power consumption of the building. With a single output model, we can estimate the power consumption of the building at only one time step $T$. The new approach allows us to predict the power consumption of the same building at multiple time steps, i.e. with a tree with $p$ outputs, we can estimate the power consumption at $T, T+1,\dots,T+p$. This is termed as look-ahead capability of a multi-variate output tree. We will consider this example in detail in Sec. \ref{SS:case_dpc}.
+
+In this section, we first explain how a CART based regression tree is built, and then modify it into a multi-variate output model suitable for finite horizon prediction.
+
+\subsection{Model Construction}
+\label{SS:training_algo}
+
+We use the following notation. We represent a dataset with $N$ observations, where each input has $n$ features and model has $p$ outputs as
+\begin{gather}
+x_i := [x_i^1, \dots, x_i^n]^T \in \mathbb{R}^n, \nonumber \\
+y_i := [y_i^1, \dots, y_i^p]^T \in \mathbb{R}^p,  \label{E:dataset}\\
+i \in \{1,2,\dots, N\}. \nonumber 
+\end{gather} 
+Splitting of nodes is shown in Fig. \ref{F:RT}. At $i^{\mathrm{th}}$ node, CART splits the data set into 2 subsets. The left branch $R_L$ contains the data corresponding to $x^i \leq t_i$ and the right branch $R_R$ corresponding to $x^i > t_i$. The optimal split at each node is then determined by minimizing the sum of mean square error in both the branches:
+\begin{gather}
+(x^k,t_k) = \argmin    \sum_{\{i|x_i \in R_L\}}{(y_i - \bar{y}_L)^2}  +  \sum_{\{i|x_i \in R_R\}} {(y_i - \bar{y}_R)^2}
+\label{E:CART_split_rule}
+\end{gather}
+where $y_i \in \mathbb{R}$ and $\bar{y}_L$ and $\bar{y}_R$ are the mean outputs of all the data points in $R_L$ and $R_R$, respectively. The tree is grown in this fashion till the number of data points in the terminal nodes (leaves) exceeds the minimum number of observations in a leaf $minLeaf$, which is often a tuning parameter. Typically a tree is grown till $minLeaf$ size is achieved, and then cost-complexity pruning is employed by collapsing the weak splits \cite{HastieTibshiraniFriedmanEtAl2005}.
+
+\begin{figure}
+\centering
+\subfigure[First split occurs with input $x^i$ at $t_i$, second split with input $x^j$ at $t_j$ and so on, resulting in 5 regions in this case $R_1, \dots, R_5$.]{
+\label{F:RT}
+\centering
+\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3.5cm/#1,
+  level distance = 1.5cm}] 
+\node [branch_c] {}
+    child[blue!50!gray!,thick]{ node [branch_l] {}
+            child[blue!50!gray!,thick]{ node [branch_l] {$R_1$} edge from parent node[above left] {$x^j \leq t_j$}}
+            child[red!50!gray!,thick]{ node [branch_r] {$R_2$} edge from parent node[above right] {$x^j > t_j$}} 
+            edge from parent node[above left] {$x^i \leq t_i$}                            
+    }
+    child[red!50!gray!,thick]{ node [branch_r] {}
+            child[blue!50!gray!,thick]{ node [branch_l] {}
+            		child[blue!50!gray!,thick]{ node [branch_l] {$R_4$} edge from parent node[above left] {$x^k \leq t_k$}}
+            		child[red!50!gray!,thick]{ node [branch_r] {$R_5$} edge from parent node[above right] {$x^k > t_k$}} 
+            }
+            child[red!50!gray!,thick]{ node [branch_r] {$R_3$}}  
+            edge from parent node[above right] {$x^i > t_i$}    
+		}
+; 
+\end{tikzpicture}
+}
+\subfigure[First split occurs with continuous input $x^i$ at $t_i$, second split with categorical input $x^j$ at $t_j^r$ such that $\mathbb{S}_{j,L}=\{ t_j^1,\dots,t_j^r \}$ and $\mathbb{S}_{j,R}=\{ t_j^{r+1},\dots,t_j^q \}$.]{
+\label{F:RT2}
+\centering
+\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3.5cm/#1,
+  level distance = 1.5cm}] 
+\node [branch_c] {}
+    child[blue!50!gray!,thick]{ node [branch_l] {}
+            child[blue!50!gray!,dashed,thick]{ node [branch_l] {$R_1$} edge from parent node[above left] {$x^j \in \mathbb{S}_{j,L}$}}
+            child[red!50!gray!,dashed,thick]{ node [branch_r] {$R_2$} edge from parent node[above right] {$x^j \in \mathbb{S}_{j,R}$}} 
+            edge from parent node[above left] {$x^i \leq t_i$}                            
+    }
+    child[red!50!gray!,thick]{ node [branch_r] {}
+            child[blue!50!gray!,thick]{ node [branch_l] {}
+            		child[blue!50!gray!,thick]{ node [branch_l] {$R_4$} edge from parent node[above left] {$x^k \leq t_k$}}
+            		child[red!50!gray!,thick]{ node [branch_r] {$R_5$} edge from parent node[above right] {$x^k > t_k$}} 
+            }
+            child[red!50!gray!,thick]{ node [branch_r] {$R_3$}}  
+            edge from parent node[above right] {$x^i > t_i$}    
+		}
+; 
+\end{tikzpicture}
+}
+\caption{Tree structures for continuous and mix of discrete and continuous variables.}
+\captionsetup{justification=centering}
+\end{figure}
+
+We extend the same approach to deal with the multi-output data. In order to determine node splits, we are again interested in calculating the splitting variable $x^k$ and the splitting value $t_k$, but this time we account for errors in all $p$ outputs. Appropriately, we modify \eqref{E:CART_split_rule} as follows:
+\begin{gather}
+(x^k,t_k) = \argmin    \sum_{\{i|x_i \in R_L\}}{||y_i - \bar{y}_L||}_l^2  +  \sum_{\{i|x_i \in R_R\}} {||y_i - \bar{y}_R||}_l^2.
+\label{E:DPC_split_rule}
+\end{gather}
+In this case, $\bar{y}_L,\bar{y}_R \in \mathbb{R}^p$ and represent the mean of $\forall y_i \in R_L$ and $\forall y_i \in R_R$, respectively. Norm in this optimization criteria can be chosen to $l^1$ norm if we want to minimize the largest absolute error in the outputs or $l^2$ norm which will minimize the sum of squares across all the outputs. Further, we can introduce weights matrix $Q \in \mathbb{R}^{p \times p}$ as other tuning parameter and choose the optimization objective similar to the cost function in Model Predictive Control (MPC):
+\begin{gather}
+\label{E:DPC_split_rule2}
+(x^k,t_k) = \argmin    \sum_{\{i|x_i \in R_L\}}{(y_i - \bar{y}_L)}^TQ{(y_i - \bar{y}_L)}  + \sum_{\{i|x_i \in R_R\}} {(y_i - \bar{y}_R)}^TQ{(y_i - \bar{y}_R)}.
+\end{gather}
+Both  \eqref{E:DPC_split_rule} and \eqref{E:DPC_split_rule2} can be solved numerically by discretizing the search space of $t_k$ between $max(x^k)$ and $min(x^k)$ calculated across $N$ data points. Finer the resolution $\mathit{res}$, better the accuracy of splits. The terminating condition for growing the tree remains unchanged in \eqref{E:DPC_split_rule} and \eqref{E:DPC_split_rule2}.
+
+So far, we covered how a tree is built when all the features/variables are continuous. it is often the case that some of the features in the data set are categorical, i.e. they can only take discrete values. 
+The problem of partitioning a set of discrete values in two subsets is a combinatorial problem. Consider a categorical input feature $x^c$ which can take $q$ different values belonging to the set $\mathbb{S}_c=\{t_c^1,\dots,t_c^q \}$. Number of ways to partition $\mathbb{S}_c$ into two non-empty subsets are $2^{q-1}-1$. Note that the different possible partitions scale exponentially with $q$, unlike in the continuous case where it grows linearly with $res$. Hence, when $q$ is large, exact search is not computationally easy to solve. We use a near-optimal approach to narrow down this search over all possible partitions. The approach is simliar to the one described in \cite{Ripley2007} for single-output system. We first find out all $y_i$s corresponding to each element in $\mathbb{S}_c$ and then order the set $\mathbb{S}_c$ according to an increasing mean:
+\begin{gather}
+\label{E:DPC_cat_split_rule}
+\bar{y}_q = \frac{\displaystyle\sum_{\{i|x^c=t_c^q\}} ||y_i||_l}{N_q},
+\end{gather}
+where $N_q$ is the number of data points for which $x^c=t_q$. Once $\mathbb{S}_c=\{t_c^1,\dots,t_c^q \}$ is ordered such that 
+$\bar{y}_1< \dots < \bar{y}_q$, we split the variable as if it is a continuous variable using \eqref{E:DPC_split_rule} or \eqref{E:DPC_split_rule2} depending upon the chosen type of formulation. If the cost is minimized for $x^c \leq t_c^r$, then the left branch contains $x^c \in \mathbb{S}_{c,L} = \{ t_c^1,\dots,t_c^r \}$ and the right branch contains $x^c \in \mathbb{S}_{c,R} = \{ t_c^{r+1},\dots,t_c^q \}$. A tree with a mix of continuous and categorical variables is shown in Fig. \ref{F:RT2}. 
+
+%\begin{figure}
+%\centering
+%\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3.5cm/#1,
+%  level distance = 1.5cm}] 
+%\node [branch_c] {}
+%    child[blue!50!gray!,thick]{ node [branch_l] {}
+%            child[blue!50!gray!,dashed,thick]{ node [branch_l] {$R_1$} edge from parent node[above left] {$x^j \in \mathbb{S}_{j,L}$}}
+%            child[red!50!gray!,dashed,thick]{ node [branch_r] {$R_2$} edge from parent node[above right] {$x^j \in \mathbb{S}_{j,R}$}} 
+%            edge from parent node[above left] {$x^i \leq t_i$}                            
+%    }
+%    child[red!50!gray!,thick]{ node [branch_r] {}
+%            child[blue!50!gray!,thick]{ node [branch_l] {}
+%            		child[blue!50!gray!,thick]{ node [branch_l] {$R_4$} edge from parent node[above left] {$x^k \leq t_k$}}
+%            		child[red!50!gray!,thick]{ node [branch_r] {$R_5$} edge from parent node[above right] {$x^k > t_k$}} 
+%            }
+%            child[red!50!gray!,thick]{ node [branch_r] {$R_3$}}  
+%            edge from parent node[above right] {$x^i > t_i$}    
+%		}
+%; 
+%\end{tikzpicture}
+%\caption{Binary regression tree: first split occurs with continuous input $x^i$ at $t_i$, second split with categorical input $x^j$ at $t_j^r$ such that $\mathbb{S}_{j,L}=\{ t_j^1,\dots,t_j^r \}$ and $\mathbb{S}_{j,R}=\{ t_j^{r+1},\dots,t_j^q \}$.}
+%\captionsetup{justification=centering}
+%\label{F:RT2}
+%\end{figure}
+
+In summary, when the data set contains both types of variables- continuous and categorical, first the range of all the categorical variables is sorted. 
+Then, the optimal cost of splitting is determined for each input feature. 
+Finally, the input feature for which this cost is minimum is taken as the splitting variable. Following this approach, we obtain a tree model in the form of
+\begin{gather}
+\begin{pmatrix}
+  y^1 \\
+  \vdots \\
+  y^p 
+ \end{pmatrix}
+ = \mathit{f} \left( x^1, \dots, x^n \right).
+ \label{E:regtree_multi}
+\end{gather}
+
+In the context of a building model, this approach is validated in Sec. \ref{SS:performance_test}.
+
+%\subsection{Interpretability of regression trees}
+%Regression trees based approaches are our choice of data-driven models since they highly interpretable, by design.
+%Interpretability is a fundamental desirable quality in any predictive model.  
+%Complex predictive models like neural-networks , support vector regression etc. go through a long calculation routine and involve too many factors. 
+%It is not easy for a human engineer to judge if the operation/decision is correct or not or how it was generated in the first place. 
+%Building operators are used to operating a system with fixed logic and rules. 
+%They tend to prefer models that are more transparent, where it is clear exactly which factors were used to make a particular prediction.
+%At each node in a regression tree a simple, if this then that, human readable, plain text rule is applied to generate a prediction at the leafs, which anyone can easily understand and interpret.
+%Making machine learning algorithms more interpretable is an active area of research~\cite{giraud1998beyond}, one that is essential for incorporating human centric models in cyber-physical energy systems.
+
+\subsection{Model Validation: Multi-variate outputs}
+\label{SS:performance_test}
+For a tree with order of autoregression $\delta = 6$ and a prediction horizon $p = 20$ and $Q$ in \eqref{E:DPC_split_rule2} as Identity matrix, the results on the test dataset are shown in Fig. \ref{F:perf_test}. The test set shows a day from July 2013, which the model has never seen before. It shows the building power consumption predicted at any time $\mathcal{P}_T$ as compared to the actual power consumption of the building. Since we can predict the power for multiple steps (horizon) at a time, we compare it to $\mathcal{P}_{T+10}$ calculated 10 steps before $T$, i.e. $T-10$,  $\mathcal{P}_{T+20}$ calculated 20 steps before $T$, i.e. $T-20$, and the ground truth from the test dataset. It can be seen that even with a relatively long horizon, the multi-variate output tree model captures the rapid changes in the response variable (power consumption) very accurately.
