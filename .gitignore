@@ -1,4 +1,6 @@
 *.zip
+*.dvi
+*.ps
 *.bbl
 *.blg
 *.log
