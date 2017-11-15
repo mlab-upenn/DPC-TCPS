@@ -16,7 +16,7 @@ where $\delta$ is the order of the auto-regression and $P(t-j)$ is the value of 
 
 \subsection{DPCRT modeling validation}
 
-\textcolor[rgb]{1.00,0.00,0.00}{We build, using \eqref{E:DPC_split_rule2}, multi-variate output regression trees using a training dataset from July $2012$. For a tree with order of auto-regression $\delta = 6$, a prediction horizon $N = 20$ and $\mathrm{Q}$ equal to the identity matrix, the results on the test dataset are shown in Fig. \ref{F:perf_test}. The test set shows a day from July 2013. In particular, we compare the building power consumption $P_t$ predicted at time $t$, with the actual power consumption of the building from the test dataset. Since we can predict the power for multiple steps of the horizon, we add to the comparison the power prediction at time $t$ computed at $t-10$ and $t-20$, i.e. $P_{t+10}$ and $P_{t+20}$ respectively. It can be seen that even with a relatively long horizon, the multi-variate output tree model captures the rapid changes in the response variable very accurately. Differently, DPCRT uses only a subset of features to train the tree, while the imputs are used to train models in the leaves. Thus the performance of DPCRT depend on $2$ key assumptions:
+\textcolor[rgb]{1.00,0.00,0.00}{We build, using \eqref{E:DPC_split_rule2}, multi-variate output regression trees using a training dataset from July $2012$. For a tree with order of auto-regression $\delta = 6$, a prediction horizon $N = 20$ and $\mathrm{Q}$ equal to the identity matrix, the results on the test dataset are shown in Fig. \ref{F:perf_test}. The test set shows a day from July 2013. In particular, we compare the building power consumption $P_t$ predicted at time $t$, with the actual power consumption of the building from the test dataset. Since we can predict the power for multiple steps of the horizon, we add to the comparison the power prediction at time $t$ computed at $t-10$ and $t-20$, i.e. $P_{t|t-10}$ and $P_{t|t-20}$ respectively. It can be seen that even with a relatively long horizon, the multi-variate output tree model captures the rapid changes in the response variable very accurately. Differently, DPCRT uses only a subset of features to train the tree, while the imputs are used to train models in the leaves. Thus the performance of DPCRT depend on $2$ key assumptions:
 \begin{itemize}[leftmargin=1cm]
 	\item The separation of variables does not introduce significant errors while training the tree.
 	\item The linear regression at the leaves is a valid assumption.
@@ -24,7 +24,7 @@ where $\delta$ is the order of the auto-regression and $P(t-j)$ is the value of 
 We verify the validity of these assumptions in terms of their effect on model accuracy considering the following $2$ cases:}
 
 \begin{figure}
-	\subfigure[Building power consumption at time $t$ predicted at time $t$ is denoted by $P(t)$, predicted 10 steps ahead at time $t-10$ is denoted by $P(t+10)$, and predicted 20 steps ahead at time $t-20$ is denoted by $P(t+20)$]{
+	\subfigure[Building power consumption at time $t$ predicted at time $t$ is denoted by $P(t)$, predicted 10 steps ahead at time $t-10$ is denoted by $P_{t|t-10}$, and predicted 20 steps ahead at time $t-20$ is denoted by $P_{t|t-20}$]{
 		\centering
 		\includegraphics[width=18pc]{Figures/perf_test.eps}
 		\label{F:perf_test}
@@ -109,7 +109,7 @@ We compare the two algorithms when simulated in closed-loop with the EnergyPlus 
 \begin{figure*}
 	\centering
 	\hspace{1pt}
-	\includegraphics[width=0.7\textwidth]{figs/peakpowerplot.pdf}
+	\includegraphics[width=0.5\textwidth]{figs/peakpowerplot.pdf}
 	\centering
 	\caption{Peak disturbance between $1530-1600$ hours. The test scenario used in the DPCRT case study simulations has a $1.5\times$ peak disturbance between $15:30$ and $16:00$.}
 	\label{F:scenario}
@@ -119,12 +119,12 @@ We compare the two algorithms when simulated in closed-loop with the EnergyPlus 
 \centering
 \subfigure[Control strategies.]{
 \centering
-\includegraphics[width=17pc]{Figures/res_control.eps}
+\includegraphics[width=18.5pc]{Figures/res_control.eps}
 \label{F:res_control}
 }
 \subfigure[Power consumption.]{
 \centering
-\includegraphics[width=17pc]{Figures/res_power.eps}
+\includegraphics[width=18.5pc]{Figures/res_power.eps}
 \label{F:res_power}
 }
 \caption{A comparison between mbCRT and DPCRT along with the greedy strategy.}

@@ -11,7 +11,58 @@
    \label{fig:training}
 \end{figure}
 
-\textcolor[rgb]{0.00,0.00,1.00}{Using this separation of variables introduced in Sec. \ref{sec:problem}, \emph{model based Control with Regression Trees (mbCRT)} is built upon the idea of simple model based regression trees~\cite{friedman1991multivariate}. In particular, as already hinted at Sec. \ref{sec:problem} and as illustrated in the right part of Fig. \ref{fig:training}, a regression tree is trained only on disturbance features in $\mathcal{X}_d$ to predict the output variable $\mathrm{y}$. Without any loss of generality, here we consider only $1$ response variable, but multiple trees can be considered for multiple response variables as we do for the case study in Sec. \ref{sec:case}. After the regression tree partitioning, a linear model is fitted using the subset of samples present in the leaf $R_i$}
+%\begin{figure}
+%	\centering
+%	\subfigure{
+%		\label{F:RT}
+%		\centering
+%		\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3.5cm/#1,
+%			level distance = 1.5cm}] 
+%		\node [branch_c] {}
+%		child[blue!50!gray!,thick]{ node [branch_l] {}
+%			child[blue!50!gray!,thick]{ node [branch_l] {$R_1$} edge from parent node[above left] {$\u_j \leq t_j$}}
+%			child[red!50!gray!,thick]{ node [branch_r] {$R_2$} edge from parent node[above right] {$\u_j> t_j$}} 
+%			edge from parent node[above left] {$\mathrm{d}_i \leq t_i$}                            
+%		}
+%		child[red!50!gray!,thick]{ node [branch_r] {}
+%			child[blue!50!gray!,thick]{ node [branch_l] {}
+%				child[blue!50!gray!,thick]{ node [branch_l] {$R_4$} edge from parent node[above left] {$\mathrm{d}_k \leq t_k$}}
+%				child[red!50!gray!,thick]{ node [branch_r] {$R_5$} edge from parent node[above right] {$\mathrm{d}_k > t_k$}} 
+%			}
+%			child[red!50!gray!,thick]{ node [branch_r] {$R_3$}}  
+%			edge from parent node[above right] {$\mathrm{d}_i> t_i$}    
+%		}
+%		; 
+%		\end{tikzpicture}
+%	}
+%	\subfigure{
+%		\label{F:RT2}
+%		\centering
+%		\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3.5cm/#1,
+%			level distance = 1.5cm}] 
+%		\node [branch_c] {}
+%		child[blue!50!gray!,thick]{ node [branch_l] {}
+%			child[blue!50!gray!,thick]{ node [branch_l] {$R_1$} edge from parent node[above left] {$\mathrm{d}_j \leq t_j$}}
+%			child[red!50!gray!,thick]{ node [branch_r] {$R_2$} edge from parent node[above right] {$\mathrm{d}_j > t_j$}} 
+%			edge from parent node[above left] {$\mathrm{d}_i \leq t_i$}                            
+%		}
+%		child[red!50!gray!,thick]{ node [branch_r] {}
+%			child[blue!50!gray!,thick]{ node [branch_l] {}
+%				child[blue!50!gray!,thick]{ node [branch_l] {$R_4$} 
+%					child[blue!50!gray!,thick]{ node [branch_l] {} edge from parent node[above] {}}}
+%				child[red!50!gray!,thick]{ node [branch_r] {$R_5$} edge from parent node[above right] {$\mathrm{d}_k > t_k$}}
+%			}
+%			child[red!50!gray!,thick]{ node [branch_r] {$R_3$}}  
+%			edge from parent node[above right] {$\mathrm{d}_i> t_i$}    
+%		}
+%		; 
+%		\end{tikzpicture}
+%	}
+%	\caption{Example of a regression tree not suitable for control due to the mixed order of $\mathcal{X}_c$ and $\mathcal{X}_d$ (left). Example of a tree structure obtained used for mbCRT algorithm. The separation of variables allows using the linear model in the leaf to use only control variables (right).}
+%	\captionsetup{justification=centering}
+%\end{figure}
+
+\textcolor[rgb]{0.00,0.00,1.00}{Using this separation of variables introduced in Sec. \ref{sec:problem}, \emph{model based Control with Regression Trees (mbCRT)} is built upon the idea of simple model based regression trees~\cite{friedman1991multivariate}. In particular, as already hinted at Sec. \ref{sec:problem} and as illustrated in the right part of Fig. \ref{fig:training}, a regression tree is trained only on disturbance features in $\mathcal{X}_d= \{ \mathrm{d_1,\ldots,d_{s-m}} \} $ to predict the output variable $\mathrm{y}$. Without any loss of generality, here we consider only $1$ response variable, but multiple trees can be considered for multiple response variables as we do for the case study in Sec. \ref{sec:case}. After the regression tree partitioning, a linear model is fitted using the subset of samples present in the leaf $R_i$}
 
 \textcolor[rgb]{0.00,0.00,1.00}{\begin{equation}\label{eq:linear_regression_leaf}
 \mathrm{y}_{R_i} = \beta_{0,i} + \beta_i u

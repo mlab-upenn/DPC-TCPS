@@ -55,6 +55,7 @@ where $\bar{y}_L$ and $\bar{y}_R$ are the mean outputs of all the data points in
 ; 
 \end{tikzpicture}
 }
+\hspace{1cm}
 \subfigure[First split occurs with continuous input $\x_i$ at $t_i$, second split with categorical input $\x_j$ at $t_j^r$ such that $\mathcal{S}_{j,L}=\{ t_j^1,\dots,t_j^r \}$ and $\mathcal{S}_{j,R}=\{ t_j^{r+1},\dots,t_j^q \}$.]{
 \label{F:RT2}
 \centering
@@ -114,7 +115,7 @@ Finally, the input feature for which this cost is minimum is taken as the splitt
 \label{SS:control_tree}
 \textcolor[rgb]{1.00,0.00,0.00}{In this section we setup a receding horizon control problem using models proposed in \eqref{eq:regtree_multi}. This algorithm is called Data-based Predictive Control with Regression Trees (DPCRT). The central idea behind DPCRT is to build a tree models which can also predict future states of the system. We still use separation of variables as in mbCRT, but training a regression tree with multiple response variables. Thus, the difference lies in the number of output variables in each leaf.}
 
-\textcolor[rgb]{0.00,0.00,1.00}{Consider $p$ response or output variables $\mathrm{y}_1,\ldots,\mathrm{y}_p$. We build $p$ multi-output regression trees. Each tree provides the prediction of the corresponding output variable over an horizon of length $N$. More precisely, using separation of variables, we first use the methodology proposed in Sec. \ref{SS:training_algo} to train $p$ multi-output regression trees with features $[\mathrm{x}_1,\ldots,\mathrm{x}_{s-m}]\in\mathcal{X}_d$, and then, as done for mbCRT, we fit linear models in the leaves using input variables $u=[\mathrm{u}_1,\ldots,\mathrm{u}_{m}]\in\mathcal{X}_c$, obtaining the following predictive models
+\textcolor[rgb]{0.00,0.00,1.00}{Consider $p$ response or output variables $\mathrm{y}_1,\ldots,\mathrm{y}_p$. We build $p$ multi-output regression trees. Each tree provides the prediction of the corresponding output variable over an horizon of length $N$. More precisely, using separation of variables, we first use the methodology proposed in Sec. \ref{SS:training_algo} to train $p$ multi-output regression trees with features $[\mathrm{d}_1,\ldots,\mathrm{d}_{s-m}]\in\mathcal{X}_d$, and then, as done for mbCRT, we fit linear models in the leaves using input variables $u=[\mathrm{u}_1,\ldots,\mathrm{u}_{m}]\in\mathcal{X}_c$, obtaining the following predictive models
 \begin{equation}\label{eq:train_model_multi}
 y_j := [\mathrm{y}_{j,t}, \ldots, \mathrm{y}_{j,t+N}]^\top = \alpha_{0,i_j} + \alpha_{i_j} [u(t),\ldots,u(t+N)]^\top
 \end{equation}
@@ -174,7 +175,7 @@ where $\bar \alpha_{0,\nu}\in\mathbb{R}$ and $\bar \alpha_\nu\in\mathbb{R}^{1 \t
 \end{algorithm}
 \begin{figure*}[h!]
 	\centering
-	\includegraphics[width=0.9\linewidth]{Figures/DPC_tree2.eps}
+	\includegraphics[width=0.9\linewidth]{Figures/DPC_tree.eps}
 	\caption{Data Predictive Control with Regression Trees with Model Training Process (left) and Receding Horizon Control (right). During the control step, the optimal control sequence $\left[u^*_t,\dots,u^*_{t+N}\right]^\top $ is determined. The first input $u(t)=u^*_t$ is applied to the system. The resulting output $\y_t$ which is a feature for the next time step is fed back to determine to determine $R_{i}$ at $t+1$.}
 	\captionsetup{justification=centering}
 	\label{F:DPC_schematic}
