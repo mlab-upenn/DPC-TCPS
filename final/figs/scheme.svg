@@ -743,9 +743,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="727.30947"
-     inkscape:cy="186.41845"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="169.46988"
+     inkscape:cy="298.46691"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -756,13 +756,7 @@
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:snap-text-baseline="false">
-    <sodipodi:guide
-       position="126.61226,194.38512"
-       orientation="1,0"
-       id="guide5093"
-       inkscape:locked="false" />
-  </sodipodi:namedview>
+     inkscape:snap-text-baseline="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -2409,19 +2403,19 @@
            id="flowPara5434-7-1-9"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Calibri;-inkscape-font-specification:'Calibri, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#0000aa">DPCRT vs mbCRT</flowPara></flowRoot>    </g>
     <rect
-       style="fill:none;fill-opacity:1;stroke:#d40000;stroke-width:0.56669742;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       style="fill:none;fill-opacity:1;stroke:#d40000;stroke-width:0.55283588;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="rect10427"
        width="102.60632"
-       height="66.666573"
+       height="63.445099"
        x="75.339607"
-       y="191.99808" />
+       y="195.21953" />
     <rect
-       style="fill:none;fill-opacity:1;stroke:#009cff;stroke-width:0.56849295;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       style="fill:none;fill-opacity:1;stroke:#009cff;stroke-width:0.55213302;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="rect10427-6"
-       width="102.65392"
-       height="67.058586"
-       x="75.314697"
-       y="115.57638" />
+       width="102.67028"
+       height="63.24445"
+       x="75.306519"
+       y="115.56821" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot10444"
