@@ -23,6 +23,7 @@
 \usepackage[per-mode=symbol]{siunitx}
 \usepackage{url}
 
+
 \usepackage{hyperref}
 \hypersetup{citecolor=blue, colorlinks=true}
 \usepackage[font=small]{caption}
@@ -32,7 +33,7 @@
 % thus preventing page breaks from occurring within multiline equations. Use:
 %\interdisplaylinepenalty=2500
 % after loading amsmath to restore such page breaks
-
+\usepackage{comment}
 \usepackage[amsmath,thmmarks,thref]{ntheorem}
 \usepackage{algorithm,algpseudocode}
 \theoremstyle{definition}
@@ -81,8 +82,9 @@
 
 \linespread{0.96}
 %\usepackage{balance}
-
-
+\def\u{\mathrm{u}}
+\def\x{\mathrm{x}}
+\def\y{\mathrm{y}}
 %\usepackage{etoolbox}
 %\makeatletter
 %\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
@@ -95,9 +97,11 @@
 \markboth{A. Jain et al.}{Data Predictive Control for Cyber-Physical Energy Systems}
 
 % Title portion
-\title{Data Predictive Control for Cyber-Physical Energy Systems}
+\title{Predictive Control with Regression Trees: An Application to Building Energy Management}
 \author{ACHIN JAIN
 \affil{University of Pennsylvania}
+FRANCESCO SMARRA
+\affil{Universit\`{a} degli Studi dell'Aquila}
 MADHUR BEHL
 \affil{University of Virginia}
 RAHUL MANGHARAM
@@ -112,14 +116,7 @@ RAHUL MANGHARAM
 
 \begin{abstract}
 
-
-Decisions on how best to optimize today's energy systems operations are becoming ever so complex and conflicting such that model-based predictive control algorithms must play a key role. However, learning dynamical models of energy consuming systems such as buildings, using grey/white box approaches is very cost and time prohibitive.
-Demand response (DR) is becoming increasingly important as the volatility on the grid continues to increase.
-%Current DR approaches are completely manual and rule-based or involve deriving first principles based models which are extremely cost and time prohibitive to build.
-We consider the problem of data-driven end-user demand response and peak power reduction for large buildings which involves predicting the demand response baseline, evaluating fixed rule based DR strategies, synthesizing DR control actions, and reducing the peak power consumption.
-We provide a model based control with regression trees algorithm (mbCRT), which allows us to perform closed-loop control for DR strategy synthesis for large commercial buildings. Our data-driven control synthesis algorithm outperforms rule-based DR by 17\% for a large DoE commercial reference building and leads to a curtailment of $380\si{\kilo\watt}$ and over \$45,000 in DR revenue.
-A data predictive control with regression trees (DPCRT) algorithm, is also presented. DPCRT is a finite receding horizon method, using which the building operator can optimally trade off peak power reduction against thermal comfort without having to learn white/grey box models of the systems dynamics. 
-Our methods have been integrated into an open source tool called DR-Advisor, which acts as a recommender system for the building's facilities manager and provides suitable control actions to meet the desired load curtailment while maintaining operations and maximizing the economic reward. DR-Advisor achieves 92.8\% to 98.9\% prediction accuracy for 8 buildings on Penn's campus. We compare DR-Advisor with other data driven methods and rank $2^{nd}$ on ASHRAE's benchmarking data-set for energy prediction.
+\textcolor[rgb]{0.00,0.00,1.00}{Large-scale cyber-physical systems optimization is one of the most important problems nowadays, therefore the use of optimal control strategies is fundamental. Model Predictive Control (MPC) is a control strategy based on the ability to predict system's behavior, that provides optimal solutions in order to optimize a generic system performance while ensuring system's constraints. For this reason MPC represents the best solution to optimize systems' performance. However, the main bottle neck that does not allow the widespread of predictive control algorithms for complex systems is mainly due to their complexity. This is because the resulting cost and time efforts needed to construct system models, as for example in the case of buildings, is prohibitive. To address this issue, a regression trees-based approach is introduced in this paper. More precisely, a data-driven model predictive control based on regression trees is proposed, which allows to perform closed-loop optimal control synthesis for cyber-physical systems. In this paper, such methodology is used to face the Demand-Response problem in buildings. In particular, it is used to optimally trade off peak power reduction against thermal comfort without having to learn white/grey box models of the systems dynamics.}
 \end{abstract}
 
 
@@ -150,7 +147,7 @@ Our methods have been integrated into an open source tool called DR-Advisor, whi
 
 \keywords{Machine learning; Predictive control; Cyber-physical Systems; Demand response; Peak power reduction}
 
-\acmformat{Achin Jain, Madhur Behl and Rahul Mangharam, 2016. Data Predictive Control for Cyber-Physical Energy Systems.}
+\acmformat{Achin Jain, Francesco Smarra, Madhur Behl and Rahul Mangharam, 2016. Data Predictive Control for Cyber-Physical Energy Systems.}
 
 % At a minimum you need to supply the author names, year and a title.
 % IMPORTANT:
@@ -166,7 +163,8 @@ Our methods have been integrated into an open source tool called DR-Advisor, whi
 \begin{bottomstuff}
 Author's addresses: {A. Jain {and} R. Mangharam, Department of Electrical and Systems Engineering,
 University of Pennsylvania; M. Behl,
-Department of Computer Science, University of Virginia.}
+Department of Computer Science, University of Virginia; F. Smarra, 
+Department of Information Engineering, Computer Science and Mathematics, Universit\`{a} degli Studi dell'Aquila.}
 \end{bottomstuff}
 
 \maketitle
@@ -179,35 +177,17 @@ Department of Computer Science, University of Virginia.}
 \label{sec:problem}
 \input{problem.tex}
 
-%\section{Learning regression trees}
-%\label{sec:rtree}
-%\input{trees.tex}
-
-\section{Data-Driven Demand Response}
+\section{Control with Regression Trees: Background}
 \label{sec:drtree}
-\input{datadr.tex}
-
-\section{Data-Driven Control Synthesis}
-\label{sec:drsyn}
 \input{DRsynthesis.tex}
 
-\section{Regression trees with multi-variate output}
-\label{S:decision_tree}
+\section{DPCRT: Data-based Predictive Control using Regression Trees}
+\label{sec:decision_tree}
 \input{DecisionTrees.tex}
 
-\section{Data predictive control} 
-\label{S:control_tree}
-\input{ControlTrees.tex}
-
-\section{Case Study}
+\section{Case Study: Peak Power Reduction}
 \label{sec:case}
 \input{case.tex}
-
-\section{Related Work}
-\label{sec:related}
-\input{related.tex}
-\label{S:related_work}
-\input{Literature.tex}
 
 \section{Conclusion}
 \label{sec:discussion}

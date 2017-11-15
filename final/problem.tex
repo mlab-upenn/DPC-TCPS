@@ -1,61 +1,28 @@
-\begin{figure}
-  \centering
-  \includegraphics[width=0.75\columnwidth]{figs/problem_description}
-  \caption{Example of a demand response timeline.}
-  \label{fig:baseline}
-\end{figure}
+\textcolor[rgb]{0.00,0.00,1.00}{Our goal is to find data-driven functional models for cyber-physical systems starting from available historical data. The aim is to build models that relate the value of the response variables $\mathrm{y}_1,\ldots,\mathrm{y}_p$ with the values of the predictor variables or features $\mathrm{x}_1,\ldots,\mathrm{x}_s$, and that can be used to setup an optimization predictive control problem. For example, in the case of buildings the response variables can be represented by the power consumption or the room temperatures, while the features can be represented by weather data, set-points information and building schedules.}
+\textcolor[rgb]{1.00,0.00,0.00}{When the dataset has lots of features, as in the case of large buildings, which interact in complicated nonlinear ways, assembling a single global model, such as linear or polynomial regression, can be difficult and lead to poor response predictions. An approach to non-linear regression is to partition the data space into smaller regions $R_i$, where the interactions are more manageable. Regression trees are an example of an algorithm which belongs to the class of recursive partitioning algorithms. The seminal algorithm for learning regression trees is CART as described in~\cite{BreimanFriedmanStoneEtAl1984}. Regression trees-based approaches are our choice to construct data-driven models for cyber-physical systems. The primary reason for this modeling choice is that regression trees are highly interpretable by design. Interpretability is a fundamental desirable quality in any predictive model. Complex predictive models like neural networks, support vector regression \etc go through a long calculation routine and involve too many factors. It is not easy for a human engineer to judge if the operation/decision is correct or not or how it was generated in the first place. For example, building operators are used to operating a system with fixed logic and rules. They tend to prefer models that are more transparent, where it is clear exactly which factors were used to make a particular prediction. At each node of a regression tree, a simple "if this then that" human readable plain text rule is applied to generate a prediction at the leafs, which anyone can easily understand and interpret. Making machine learning algorithms more interpretable is an active area of research, one that is essential for incorporating human centric models in cyber-physical systems.}
 
-The timeline of a DR event is shown in Fig.~\ref{fig:baseline}.
-%An \emph{event notification} is issued by the utility/CSP, at the notification time ($\sim$30mins).
-%The time by which the reduction must be achieved, is the \emph{reduction deadline}.
-%The main period during which the demand needs to be curtailed is the \emph{sustained response period} (1$\sim$6hrs).
-%The end of the response period is when the main curtailment is released. 
-%The normal operation is gradually resumed during the \emph{recovery period}.
-%The DR event ends at the end of the recovery period.
-The key to answering the question of what actions to take to achieve a significant DR curtailment upon receiving a notification, lies in making accurate predictions about the power consumption response of the building. 
-Specifically, it involves solving the three challenging problems of end-user demand response, which are described next.
+\textcolor[rgb]{0.00,0.00,1.00}{We want to use such regression trees-based models to setup optimal predictive control strategies as in the classical MPC formulation. The main problem rising up when dealing with machine learning algorithms is that they do not provide mathematical models that are directly usable for control. To overcome this issue we propose a solution that is based on the \emph{separation of variables}. In particular, given a dataset $(\mathcal{X},\mathcal{Y})$, where $\mathcal{X}=\{\x_1,\ldots,\x_s\}$ is the set of predictor variables (or features) and $\mathcal{Y}=\{\y_1,\ldots,\y_p\}$ is of response variables, we want to use regression trees to learn a model $f_i$ to predict the response $\y_i$ as }
+\textcolor[rgb]{0.00,0.00,1.00}{
+\begin{equation}\label{eq:RTmodel}
+	\y_i=f_i(\x_1,\ldots,\x_s)
+\end{equation}
+}
 
+\textcolor[rgb]{0.00,0.00,1.00}{
+Given a forecast of predictor variables $\hat{\x}_i$, we can predict system response using \eqref{eq:RTmodel}. However, suppose the set of system inputs $\mathcal{X}_c$, that are the variables we can manipulate is a subset of the features set, i.e. $\mathcal{X}_c=\{\mathrm{u}_1,\ldots,\mathrm{u}_m\}\subset\mathcal{X}$. Suppose we want to setup a receding horizon control problem to find optimal inputs that optimize a performance cost function. Let $u(t)=[\mathrm{u}_1(t),\ldots,\mathrm{u}_m(t)]$ be the vector of inputs applied to the system at time $t$ to be optimized, $x(t) = [\mathrm{x}_1(t),\ldots,\mathrm{x}_{s-m}(t)]$ be the vector of system variables measured at time $t$, and $y(t) = [\mathrm{y}_1(t),\ldots,\mathrm{y}_{p}(t)]$ be the vector of system response variables at time $t$, then model \eqref{eq:RTmodel} can not be used to solve the following optimal predictive control problem}
 
-\subsection{DR baseline prediction}
-\label{sec:baselining}
-The DR baseline is an estimate of the electricity that would have been consumed by a customer in the absence of a demand response event (as shown in Fig.~\ref{fig:baseline}) 
-The measurement and verification of the demand response baseline is the most critical component of any DR program since the amount of DR curtailment, and any associated financial reward can only be determined with respect to the baseline estimate.
-The goal is to learn a predictive model $f$ which relates the baseline power consumption estimate $\mathcal{P}_{\mathrm{base}}$ to the forecast of the weather conditions $\mathcal{W}$ and building schedule $\mathcal{S}$ for the duration of the DR-event, i.e. $\mathcal{P}_{\mathrm{base}} = f(\mathcal{W},\mathcal{S})$.
-
-
-\subsection{DR strategy evaluation}
-\label{sec:eval}
-%Most DR today is manual and conducted using fixed rules and pre-determined curtailment strategies based on recommended guidelines, experience and best practices. 
-During a DR event, the building's facilities manager must choose a single strategy among several pre-determined strategies to achieve the required power curtailment. 
-Each strategy includes adjusting several control knobs such as temperature set-points, lighting levels and temporarily switching off equipment and plug loads to different levels across different time intervals. 
-As only one strategy can be used at a time, the question then is, \emph{how to choose the DR strategy from a pre-determined set of strategies which leads to the largest load curtailment?}
-
-Instead of predicting the baseline power consumption $\mathcal{P}_{\mathrm{base}}$, in this case we want the ability to predict the actual response of the building $\mathcal{P}$ due to any given strategy.
-For example, in Fig.~\ref{fig:baseline}, there are $N$ different strategies available to choose from. 
-DR-Advisor predicts the power consumption of the building due to each strategy and chooses the DR strategy $(1,\dots, N)$ which leads to the largest load curtailment.
-The resulting strategy could be a combination of switching between the available set of strategies.
-
-\subsection{DR strategy synthesis}
-\label{sec:synthesis}
-Instead of choosing a DR strategy from a pre-determined set of strategies, a harder challenge is to synthesize new DR strategies and obtain optimal operating points for the different control variables.
-We can cast this problem as the following optimization over the set of control variables $\mathbb{X}_c$
-%\begin{equation}
-%\begin{aligned}
-%& \underset{\mathbb{X}_c}{\text{minimize}}
-%& & f(\hat{Y_{kW}}) \\
-%& \text{subject to}
-%& & \hat{Y_{kW}} = h(\mathbb{X}_c) \\
-%& & & \mathbb{X}_c \in \mathbb{X}_{safe}
-%\end{aligned}
-%\label{eq:linear_program}
-%\end{equation}
-\begin{align}
+\textcolor[rgb]{0.00,0.00,1.00}{
+\begin{equation}\label{eq:linear_program}
 \begin{aligned}
-\text{minimize } \ \ \ & \ \mathit{g} \left( \mathbb{Y}, \mathbb{X}_c  \right) \\ 
-\text{subject to } \ \ \ & \mathbb{Y} = h \left( \mathbb{X}_c \right), \\ 
-\ \ \ & \ \mathbb{X}_c \in \mathbb{X}_{\mathrm{des}},
-  \end{aligned}
-  \label{eq:linear_program}
-\end{align}
-where we want to minimize the predicted power response of the building $\mathbb{Y}:=\mathcal{P}$, subject to a predictive model which relates the response to the control variables and subject to the constraints on the control variables.
-Unlike rule-based DR, which does not account for building state and external factors, in DR synthesis the optimal control actions are derived based on the current state of the building, forecast of outside weather and electricity prices.
+& \underset{u_{t+k}\in\mathcal{X}_c}{\text{minimize}} & &  \sum_{k = 0}^{N}{J(y_{t+k},u_{t+k})}  \\
+& \text{subject to }                                  & &  y_{t+k}    =   f(x_{t+k},u_{t+k})     \\
+&                                                     & &  u_{t+k}   \in \mathcal{\bar U}        \\
+&                                                     & &  y_{t+k}   \in \mathcal{\bar Y}        \\
+&                                                     & &  x_{t}      =   x(t)                   \\
+&                                                     & &  k          =   0,\ldots,N             \\
+\end{aligned}
+\end{equation}
+This is because inputs $u$ are optimization variables, hence they are not known a priori to be used as features to build the prediction using \eqref{eq:RTmodel}.}
+
+\textcolor[rgb]{0.00,0.00,1.00}{
+\emph{Separation of variables} is a technique that consists on partitioning the features dataset into inputs (or control variables) and disturbances sets, i.e. the sets of variables we can and can not manipulate, respectively. More precisely, $\mathcal{X} = \mathcal{X}_c\biguplus\mathcal{X}_d$, where $\biguplus$ represents the disjoint union. The regression tree is trained only using the disturbance variables in $\mathcal{X}_d$, so that we can associate to each leaf a model that depends only on the inputs data. In this way we can use disturbances forecasts to predict the system behavior using \eqref{eq:RTmodel}. This procedure provides a modeling framework that allows to solve optimization problem \eqref{eq:linear_program}. In the next $2$ sections we show how this is achieved. In particular, in the next section we recall the mbCRT algorithm, that uses separation of variables to create a regression trees-based model that can be used to solve optimization problem \eqref{eq:linear_program} for the one step lookahead case, i.e. only with $N=0$. Then we provide a novel methodology, based on the redefinition of the regression trees learning algorithm, so that optimization problem \eqref{eq:RTmodel} can be solved for arbitrary $N$. We finally compare in Sec. \ref{sec:case} the performance of the $2$ approaches to show how the long term prediction can improve system performance.}

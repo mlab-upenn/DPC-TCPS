@@ -1,107 +1,62 @@
-%In 2013, a report by the U.S. National Climate Assessment provided evidence that the most recent decade was the nation's warmest on record~\cite{melillo2014climate} and experts predict that temperatures are only going to rise.
+2015 was the hottest year on record since the beginning of weather recording in 1880~\cite{noaa}. Heat waves in summer and polar vortexes in winter are growing longer and pose increasing challenges to an already over-stressed electric grid. Furthermore, with the increasing penetration of renewable generation, the electricity grid is also experiencing a shift from predictable and dispatchable electricity generation to variable and non-dispatchable generation. This adds another level of uncertainty and volatility to the electricity grid. The volatility due to the mismatch between electricity generation and supply further leads to volatility in the wholesale price of electricity. For example, the polar vortex triggered extreme weather events in the U.S. in January 2014, which caused many electricity customers to experience increased costs. Parts of the U.S. north-eastern electricity grid experienced a 86 fold increase in the price of electricity from $\$31/\si{\mega\watt\hour}$ to $\$2,680/\si{\mega\watt\hour}$ in a matter of a few minutes~\cite{volatility}.  Such events show how unforeseen and uncontrollable circumstances can greatly affect electricity prices that impact grid operator and customers. Electricity price volatility, is becoming the new norm rather than the exception.
 
+Across the United States, utilities and grid operators are devoting increasing attention and resources to Demand-Response (DR). It is considered as a reliable means of mitigating the uncertainty and volatility of renewable generation and extreme weather conditions and improving the grid's efficiency and reliability. The resource contribution from all U.S. DR programs is estimated to be nearly 72,000 MW, or about 9.2 percent of U.S. peak demand~\cite{federal2008assessment} making DR the largest virtual generator in the U.S. national grid. The annual revenue to end-users from DR markets with PJM ISO alone is more than \$700 million~\cite{pjm}. Global DR revenue is expected to reach nearly \$40 billion from 2014 through 2023~\cite{navigant}.
 
-2015 was the hottest year on record since the beginning of weather recording in 1880~\cite{noaa}. 
-Heat waves in summer and polar vortexes in winter are growing longer and pose increasing challenges to an already over-stressed electric grid. 
-Furthermore, with the increasing penetration of renewable generation, the electricity grid is also experiencing a shift from predictable and dispatchable electricity generation to variable and non-dispatchable generation. 
-This adds another level of uncertainty and volatility to the electricity grid.
-The volatility due to the mismatch between electricity generation and supply further leads to volatility in the wholesale price of electricity.
-For \eg the polar vortex triggered extreme weather events in the U.S. in January 2014, which caused many electricity customers to experience increased costs.
-Parts of the U.S. north-eastern electricity grid experienced a 86 fold increase in the price of electricity from $\$31/\si{\mega\watt\hour}$ to $\$2,680/\si{\mega\watt\hour}$ in a matter of a few minutes~\cite{volatility}. 
-%Similarly, the summer price spiked $32$ fold from an average of $\$25/\si{\mega\watt\hour}$ to $\$800/\si{\mega\watt\hour}$ in July of 2015.
-Such events show how unforeseen and uncontrollable circumstances can greatly affect electricity prices that impact grid operator and customers. 
-%Energy industry experts are now considering the concept that extreme weather, more renewables and resulting 
-Electricity price volatility, is becoming the new norm rather than the exception.
+The volatility in real-time electricity prices poses the biggest operational and financial risk for large scale end-users of electricity such as large commercial buildings, industries and institutions, often referred to as \textit{C/I/I} consumers. In order to shield themselves from the volatility and risk of high prices, such consumers must be more flexible in their electricity demand. Consequently, large \textit{C/I/I} customers are increasingly looking to demand response programs to help manage their electricity costs. DR programs involve a voluntary response of a building to a price signal or a load curtailment request from the utility or the curtailment service provider (CSP). Upon successfully meeting the required curtailment level the end-users are financially rewarded, but may also incur penalties for under-performing and not meeting a required level of load curtailment. In practice, one of the biggest challenges with end-user demand response is the following: \emph{Upon receiving the notification for a DR event, what actions must the end-user take in order to achieve an adequate and a sustained DR curtailment?} 
 
-Across the United States, utilities and grid operators are devoting increasing attention and resources to demand response (DR). It is considered as a reliable means of mitigating the uncertainty and volatility of renewable generation and extreme weather conditions and improving the grid's efficiency and reliability.
-The resource contribution from all U.S. demand response programs is estimated to be nearly 72,000 MW, or about 9.2 percent of U.S. peak demand~\cite{federal2008assessment} making DR the largest virtual generator in the U.S. national grid.
-The annual revenue to end-users from DR markets with PJM ISO alone is more than \$700 million~\cite{pjm}. 
-Global DR revenue is expected to reach nearly \$40 billion from 2014 through 2023~\cite{navigant}.
+\textcolor[rgb]{0.00,0.00,1.00}{Nowadays, these actions are rule-based and consider human-in-the-loop strategies where decisions depend on the facilities manager experience. However, this approach has different disadvantages:}
 
-%\begin{figure}
-%\centering
-%\includegraphics[width=\columnwidth]{figs/twocolumnnew-compressed}
-%\caption{Majority of DR today is manual and rule-based. (a) The fixed rule based DR is inconsistent and could under-perform compared to the required curtailment, resulting in DR penalties. (b) Using data-driven models DR-Advisor uses DR strategy evaluation and DR strategy synthesis for a sustained and sufficient curtailment.}
-%\label{fig:twocolumn}
-%\vspace{-10pt}
-%\end{figure}
+\begin{itemize}[leftmargin=1cm]
+	\item \emph{Limitations of rule-based.} The building's operating conditions, internal thermal disturbances and environmental conditions must all be taken into account to make appropriate DR control decisions, which is not possible with using rule-based and pre-determined DR strategies since they do not account for the state of the building but are instead based on best practices and rules of thumb. 
+	Rule based DR strategies have the advantage of being simple but they do not account for the state of the building and weather conditions during a DR event.
+	\item \emph{Control complexity and scalability.} Upon receiving a notification for a DR event, the building's facilities manager must determine an appropriate DR strategy to achieve the required load curtailment. 
+	These control strategies can include adjusting zone temperature set-points, supply air temperature and chilled water temperature set-point, dimming or turning off lights, decreasing duct static pressure set-points and restricting the supply fan operation \etc. 
+	In a large building, it is difficult to assess the effect of one control action on other sub-systems and on the building's overall power consumption because the building sub-systems are tightly coupled.
+\end{itemize}
+\textcolor[rgb]{0.00,0.00,1.00}{These drawbacks are perfectly addressed considering predictive control strategies such as Model Predictive Control (MPC). MPC is a well consolidated control strategy that allows to optimize a desired system performance while guaranteeing system constraints. For example it can be used to provide the optimal actions for an energy curtailment during a DR event while guaranteeing thermal comfort for occupants. So MPC-based solutions perfectly fit to the DR problem. However, the quality of the MPC solutions is strictly related to the accuracy of the predictive models describing the system. This last did not allowed the widespread of MPC for complex systems such as buildings. Hence the following drawbacks when using MPC must be considered:}
 
-The volatility in real-time electricity prices poses the biggest operational and financial risk for large scale end-users of electricity such as large commercial buildings, industries and institutions; often referred to as \textit{C/I/I} consumers. 
-In order to shield themselves from the volatility and risk of high prices, such consumers must be more flexible in their electricity demand. 
-Consequently, large \textit{C/I/I} customers are increasingly looking to demand response programs to help manage their electricity costs.
-DR programs involve a voluntary response of a building to a price signal or a load curtailment request from the utility or the curtailment service provider (CSP). 
-Upon successfully meeting the required curtailment level the end-users are financially rewarded, but may also incur penalties for under-performing and not meeting a required level of load curtailment.
-In practice, one of the biggest challenges with end-user demand response is the following: \emph{Upon receiving the notification for a DR event, what actions must the end-user take in order to achieve an adequate and a sustained DR curtailment?} 
+\begin{itemize}[leftmargin=1cm]
+\item \emph{Modeling complexity and heterogeneity.} Unlike the automobile or the aircraft industry, each building is designed and used in a different way and therefore it must be uniquely modeled. Learning predictive models of building's dynamics using first principles based approaches (\eg with EnergyPlus~\cite{Crawley2001319}) is very cost and time prohibitive and requires retrofitting the building with several sensors~\cite{costmpc}. The user expertise, time and costs required to develop a model of a single building is very high.
+\item \emph{Interpretability of modeling and control.} Predictive models for buildings, regardless how sophisticated, lose their effectiveness unless they can be interpreted by human experts and facilities managers in the field. Therefore, the required solution must be transparent, human centric and highly interpretable.
+\end{itemize}
 
-This is a hard question to answer because of the following reasons:
-\begin{enumerate}[leftmargin=0.5cm,topsep=1pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
-\item \textbf{Modeling complexity and heterogeneity}: Unlike the automobile or the aircraft industry, each building is designed and used in a different way and therefore, it must be uniquely modeled. 
-Learning predictive models of building's dynamics using first principles based approaches (\eg with EnergyPlus~\cite{Crawley2001319}) is very cost and time prohibitive and requires retrofitting the building with several sensors~\cite{costmpc};
-The user expertise, time, and associated sensor costs required to develop a model of a single building is very high.
-%This is because usually a building modeling domain expert typically uses a software tool to create the geometry of a building from the building design and equipment layout plans, add detailed information about material properties, about equipment and operational schedules. 
-%There is always a gap between the modeled and the real building and the domain expert must then manually tune the model to match the measured data from the building~\cite{new2012autotune}. 
-\item \textbf{Limitations of rule-based DR}: The building's operating conditions, internal thermal disturbances and environmental conditions must all be taken into account to make appropriate DR control decisions, which is not possible with using rule-based and pre-determined DR strategies since they do not account for the state of the building but are instead based on best practices and rules of thumb. 
-%As shown in Fig.~\ref{fig:twocolumn}(a), the performance of a rule-based DR strategy is inconsistent and can lead to reduced amount of curtailment which could result in penalties to the end-user. 
-%In our work, we show how a data-driven DR algorithm outperforms a rule-based strategy by $17\%$ while accounting for thermal comfort.
-Rule based DR strategies have the advantage of being simple but they do not account for the state of the building and weather conditions during a DR event.
-%Despite this lack of predictability, rule-based DR strategies account for the majority of DR approaches.
-\item \textbf{Control complexity and scalability}: Upon receiving a notification for a DR event, the building's facilities manager must determine an appropriate DR strategy to achieve the required load curtailment. 
-These control strategies can include adjusting zone temperature set-points, supply air temperature and chilled water temperature set-point, dimming or turning off lights, decreasing duct static pressure set-points and restricting the supply fan operation \etc. 
-In a large building, it is difficult to assess the effect of one control action on other sub-systems and on the building's overall power consumption because the building sub-systems are tightly coupled. 
-%Consider the case of the University of Pennsylvania's campus, which has over a hundred different buildings and centralized chiller plants. In order to perform campus wide DR, the facilities manager must account for several hundred thousand set-points and their impact on the different buildings. Therefore, it is extremely difficult for a human operator to accurately gauge the building's or a campus's response.
-\item \textbf{Interpretability of modeling and control}: Predictive models for buildings, regardless how sophisticated, lose their effectiveness unless they can be interpreted by human experts and facilities managers in the field.
-%For \eg artificial neural networks (ANN) obscure physical control knobs and interactions and hence, are difficult to interpret by building facilities managers.
-Therefore, the required solution must be transparent, human centric and highly interpretable.
-\end{enumerate}
+\subsection{Main contribution}
 
-\begin{figure}
-\centering
-\includegraphics[width=0.6\columnwidth]{figs/overview.pdf}
-\caption{Overview of DR-Advisor Architecture.}
-\label{fig:overview}
+\textcolor[rgb]{0.00,0.00,1.00}{In order to face all the problems described above, our goal is to use machine learning algorithms to provide data-driven models for cyber-physical systems to take only the advantages of both approaches, i.e. simplicity of rule-based strategies and the predictive capability of model-based control, but without the expense of first principle or grey-box model development. However, this is not an easy task since, although machine learning algorithms are a popular choice for predicting systems' behavior, they do not provide models that are suitable for control. To the best of the authors' knowledge, \cite{Behl201630} is the first work that addresses the problem of using regression tree-based algorithms to provide models of system dynamics to be used in a optimization control problem setup. More precisely, the authors used regression trees-based algorithms to create a data-driven model-based controller for the Demand-Response problem. The authors showed the benefits of using regression trees-based approaches to estimate the DR baseline power consumption and how to build auto-regressive trees for DR control strategies evaluation. Moreover, they proposed a model based control strategy using regression trees (mbCRT) to enable control with regression trees and use it for real-time DR strategy synthesis. In particular, mbCRT algorithm can be used to setup optimal control problems with one-step lookahead prediction, for example to trade off thermal comfort inside a building against the amount of load curtailment. However, mbCRT does not allow to setup a receding horizon control problem with arbitrarily horizon length. This drawback limits closed-loop control performance since it does not take into account the very accurate long term state prediction that regression trees can provide. In this paper we overcome this issue providing the following contributions 
+\\
+\begin{itemize}[leftmargin=1cm]
+	\item \emph{Multi-variate output regression trees:} we introduce a novel methodology to construct a multi-variate output predictive model using regression trees, where each output corresponds to the prediction on a future step of the horizon. More precisely, we setup a least square problem that minimize the prediction error over the control horizon. This is done by modifying the variable selection and splitting criteria at the nodes of the regression tree standard algorithm CART \cite{BreimanFriedmanStoneEtAl1984}.
+	\item \emph{Predictive control:} we extend the mbCRT algorithm proposing a Data-based Predictive Control strategy using Regression Trees (DPCRT), that implements receding horizon control using data-based models learned from the available historical data.
+	\item \emph{Application:} we apply this control strategy to peak power curtailment on a large office building and compare with the previous mbCRT algorithm. Results show a substantial improvement using DPCRT by $8.6\%$ with respect of mbCRT in terms of peak curtailment.\\
+\end{itemize}
+Summarizing,} the methodology proposed in this paper bypass the cost and time prohibitive process of building high fidelity models that use grey and white box modeling approaches while still being suitable for receding horizon control. These are the first algorithms of its kind that enable closed-loop control synthesis and finite receding horizon control with regression trees. \textcolor[rgb]{0.00,0.00,1.00}{Paper flow is summarized in Fig. \ref{F:scheme}.}
+
+\subsection{Related work}
+\label{sec:related}
+\textcolor[rgb]{0.00,0.00,1.00}{In the recent years a lot of attention has been focused on data-driven optimal control and different approaches have been considered.} For example in some works, models are trained on optimal solutions obtained from MPC. The resulting models can then be used for explicit MPC, as in~\cite{BemporadMorariDuaEtAl2002}. This approach has been applied to problems of  stabilization \cite{CavagnariMagniScattolini1999} and freeway traffic systems using regression trees \cite{OleariFrejoCamachoEtAl2015}. 
+Another class of methods solve the optimization directly on the trained models to do predictive control \textcolor[rgb]{0.00,0.00,1.00}{ \cite{Hou2013,Costanzo2016,FerreiraRuanoSilvaEtAl2012}. However, none of them address the problem of including data-driven state models into the optimal predictive control loop, and hence allow to set up a MPC-like optimal control problem. The first results in this sense have been introduced for the first time in \cite{Behl201630}, where the authors proposed MPC-like control problems considering regression tree-based algorithms for the DR problem. In \cite{KusiakSongZheng2009}, instead, neural networks are used to setup a MPC-like control for the wind turbine problem using evolutionary algorithms. Nevertheless, their approaches considered only one-step lookahead predictive model, and hence did not allow predictive control over an arbitrary horizon.}
+
+\textcolor[rgb]{1.00,0.00,0.00}{More specifically to the Demand-Response problem, there is a vast amount of literature like (\cite{oldewurtel2013towards,xu2004peak}), which addresses the problem of determining DR strategies. The majority of the approaches are using either rule-based techniques for curtailment or white/grey box model-based control. These lasts usually assume that the model of the system is either perfectly known or found in literature, whereas the task is much more complicated and time consuming in case of a real building and sometimes, it can be even more complex and involved than the controller design itself. After several years of work on using first principles based models for demand response, multiple authors~\cite{costmpc,reallife} have concluded that the biggest hurdle to mass adoption of intelligent building control is the cost and effort required to capture accurate dynamical models of the buildings. There are ongoing efforts to make tuning and identifying white box models of buildings more autonomous~\cite{new2012autotune}. OpenADR standard and protocol~\cite{openadr} describes the formats for information exchange to facilitate DR but modeling, prediction and control strategies are out of scope. Several machine learning approaches~\cite{edwards2012predicting,vaghefi2014modeling,yin2012scalable} have been utilized before for forecasting electricity load including some which use regression trees. However, there are two significant shortcomings of the work in this area: 
+	\begin{inparaenum}[(a)]
+		\item these approaches are coarse grained and  are not aimed at solving demand response problems but are restricted to long term load forecasting with applications in evaluating building retrofits savings and building energy ratings; 
+		\item  there is no focus on control synthesis or addressing the suitability of the model to be used in control design. 
+	\end{inparaenum}
+	There exist several different approaches to balance the power consumption in buildings and avoid peaks, e.g. by load shifting and load shedding \cite{KiliccoteEtAl06aca,LeeEtAl08dom}. However, they operate on coarse grained time scales and do not guarantee any thermal comfort.}
+\newpage
+\begin{figure}[t!]
+	\begin{center}
+		\hspace{0.8cm}
+		\includegraphics[width=0.8\textwidth]{figs/scheme.eps}
+		\centering
+		\caption{Historical data are used to train models for both DPCRT and mbCRT. Such models are used to run closed-loop optimization. Finally, the two approaches are compared.}
+		\label{F:scheme}
+		\vspace{-10pt}
+	\end{center}
 \end{figure}
 
-The goal with data-driven methods for cyber-physical energy systems is to make the best of both worlds; i.e. simplicity of rule based approaches and the predictive capability of model based strategies, but without the expense of first principle or grey-box model development.
+The DPCRT algorithm is first of its kind that does finite receding horizon control with regression trees. It is computationally efficient because the optimization problem is convex and the number of constraints scales linearly with the number of control variables. \textcolor[rgb]{0.00,0.00,1.00}{A preliminary version of this paper can be found in the conference paper \cite{JainBuildsys2016}.}
 
-In this paper, we present a method called DR-Advisor (Demand Response-Advisor), which acts as a recommender system for the building's facilities manager and provides the power consumption prediction and control actions for meeting the required load curtailment and maximizing the economic reward.  
-Using historical meter and weather data along with set-point and schedule information, DR-Advisor builds a family of interpretable regression trees to learn non-parametric data-driven models for predicting the power consumption of the building (Fig.~\ref{fig:overview}).
-DR-Advisor can be used for real-time demand response baseline prediction, strategy evaluation and control synthesis, without having to learn first principles based models of the building.
-We build on our previous work on data-driven demand response~\cite{BehlJainMangharam2016} and present a receding horizon predictive control algorithm for demand response and peak power reduction. 
+\subsection{Paper organization}
 
-\subsection{Contributions}
+\textcolor[rgb]{0.00,0.00,1.00}{This paper is organized as follows. In Sec.~\ref{sec:problem} we describes our problem formulation. In Sec.~\ref{sec:drtree}, we recall the data-driven control strategy proposed in \cite{Behl201630} that will be useful to introduce our new methodology. In Sec.~\ref{sec:decision_tree} we present our main contribution: predictive control using regression trees. In particular, in Sec. \ref{SS:training_algo} we extend the regression trees standard training algorithm, so that we can use it to build predictive models over an horizon of arbitrary length, while in Sec. \ref{SS:control_tree} we use this algorithm to formally build system models and setup a receding horizon optimal control problem that can be used for the closed-loop control. Finally, in Sec. \ref{sec:case} we apply DPCRT to a peak power reduction problem and compare it with mbCRT.}
 
-This work has the following data-driven contributions:
-
-\begin{enumerate}
-\item \textbf{Demand Response:}
-\begin{enumerate} %[leftmargin=0.5cm,topsep=1pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
-\item \textbf{Baseline Prediction:} We demonstrate the benefit of using regression trees based approaches for estimating the demand response baseline power consumption. Using regression tree-based algorithms eliminates the cost of time and effort required to build and tune first principles based models of buildings for DR. 
-DR-Advisor achieves a prediction accuracy of 92.8\% to 98.9\% for baseline estimates of eight buildings on the Penn campus.
-\item \textbf{Strategy Evaluation:} We present an approach for building auto-regressive trees and apply it for demand response strategy evaluation. 
-%Our models takes into account the state of the building and weather forecasts to help choose the best DR strategy among several pre-determined strategies.
-\item \textbf{Control Synthesis:}  We introduce a novel model based control with regression trees (mbCRT) algorithm to enable control with regression trees and use it for real-time DR synthesis. Using the mbCRT algorithm, we can optimally trade off thermal comfort inside the building against the amount of load curtailment. While regression trees are a popular choice for prediction based models, this is the first time regression tree based algorithms have been used for controller synthesis with applications in demand response. Our synthesis algorithm outperforms rule based DR strategy by 17\% while maintaining bounds on thermal comfort inside the building.
-\end{enumerate}
-
-\item \textbf{Peak Power Reduction:}
-\begin{enumerate} %[leftmargin=0.5cm,topsep=1pt,itemsep=-1ex,partopsep=1ex,parsep=1ex]
-\item \textbf{Multi-variate output regression trees:} We also present a method for constructing a multi-variate output predictive model using regression trees. This is done by modifying the variable selection and splitting criteria at the nodes of the regression tree.
-% The proposed algorithm achieves an accuracy of 90\% on test data set.
-\item \textbf{Data predictive control:} We extend the mbCRT algorithm and present a data predictive control with regression trees (DPCRT) algorithm for finite receding horizon control. The algorithm is applied for peak power curtailment on a large office building, we evaluations show that DPCRT outperforms mbCRT by 8.6\%.
-\end{enumerate}
-
-We evaluate the performance of DR-Advisor using a mix of real data from 8 buildings on the campus of the University of Pennsylvania, in Philadelphia, USA and data-sets from a virtual building test-bed for the Department of Energy's (DoE) large commercial reference building. We also compare the performance of DR-Advisor against other data-driven methods using a bench-marking data-set from AHRAE's great energy predictor shootout challenge.
-%The DPCRT algorithm is first of its kind that does finite receding horizon control with regression trees. 
-%We evaluate the performance of our methods using a U.S. Department of Energy (DoE) commercial reference building model.
-The data predictive control methods presented in this paper bypass the cost and time prohibitive process of building high fidelity models of buildings that use grey and white box modeling approaches while still being suitable for receding horizon control design.
-These are the first algorithms of its kind that enable closed loop control synthesis and  finite receding horizon control with regression trees. 
-
-\end{enumerate}
-
-This paper is organized as follows. Sec.~\ref{sec:problem} describes the demand response problem. 
-In Sec.~\ref{sec:drtree}, we present how data-driven algorithms can be used for the problems associated with DR. 
-Sec.~\ref{sec:drsyn} presents a new algorithm to perform control with regression trees for synthesizing demand response strategies.
-In Sec.~\ref{S:decision_tree}, a multi-variate output regression tree algorithm is presented. The receding horizon data-predictive control algorithm is described in Sec.~\ref{S:control_tree}.
-Sec.~\ref{sec:case} presents a comprehensive case study using data from 8 real buildings and a virtual test-bed.
-In Sec.~\ref{sec:related}, a short survey of related work has been presented. 
-We conclude this paper in Sec.~\ref{sec:discussion} with a summary of the results. 
-%and a discussion about future directions.
