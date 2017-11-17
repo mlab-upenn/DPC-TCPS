@@ -7,7 +7,7 @@ The volatility in real-time electricity prices poses the biggest operational and
 Unfortunately, most of the Demand Response today is done in an ad-hoc manner. 
 The decisions are rule-based or they depend upon a building operator's experience, which has several disadvantages:
 
-\begin{itemize}[leftmargin=1cm]
+\begin{itemize}[leftmargin=0.5cm]
 	\item \emph{Limitations of rule-based.} The building's operating conditions, internal thermal disturbances and environmental conditions must all be taken into account to make appropriate DR control decisions, which is not possible with using rule-based and pre-determined DR strategies since they do not account for the state of the building but are instead based on best practices and rules of thumb. 
 	Rule based DR strategies have the advantage of being simple but they do not account for the state of the building and weather conditions during a DR event.
 	\item \emph{Control complexity and scalability.} Upon receiving a notification for a DR event, the building's facilities manager must determine an appropriate DR strategy to achieve the required load curtailment. 
@@ -16,48 +16,79 @@ The decisions are rule-based or they depend upon a building operator's experienc
 \end{itemize}
 These drawbacks are addressed by predictive control techniques such as Model Predictive Control (MPC). MPC allows to optimize desired performance while guaranteeing system's constraints. For example, it can be used to provide the optimal actions for an energy curtailment during a DR event while guaranteeing thermal comfort for occupants. So MPC-based solutions fit into the DR problem. However, the quality of the MPC solutions depends on the accuracy of the predictive models describing the system. This limits the widespread of MPC for complex systems such as buildings. Thus, in context of modeling of large buildings, applying MPC poses further challenges:
 
-\begin{itemize}[leftmargin=1cm]
+\begin{itemize}[leftmargin=0.5cm]
 \item \emph{Modeling complexity and heterogeneity.} Unlike the automobile or the aircraft industry, each building is designed and used in a different way and therefore it must be uniquely modeled. Learning predictive models of building's dynamics using first principles based approaches (\eg with EnergyPlus~\cite{Crawley2001319}) is very cost and time prohibitive and requires retrofitting the building with several sensors~\cite{costmpc}. The user expertise, time and costs required to develop a model of a single building are very high.
 %\item \emph{Interpretability of modeling and control.} Predictive models for buildings, regardless how sophisticated, lose their effectiveness unless they can be interpreted by human experts and facilities managers in the field. Therefore, the required solution must be transparent, human centric and highly interpretable.
 \end{itemize}
 
 \subsection{Main contribution}
 
-\textcolor[rgb]{0.00,0.00,1.00}{In order to address the aforementioned challenges, our goal is to use machine learning algorithms to provide data-driven models for cyber-physical systems to take only the advantages of both approaches, i.e. simplicity of rule-based strategies and the predictive capability of model-based control, but without the expense of first principle or grey-box model development. However, this is not an easy task since, although machine learning algorithms are a popular choice for predicting systems' behavior, they do not provide models that are suitable for control. To the best of the authors' knowledge, \cite{Behl201630} is the first work that addresses the problem of using regression tree-based algorithms to provide models of system dynamics to be used in a optimization control problem setup. More precisely, the authors used regression trees-based algorithms to create a data-driven model-based controller for the Demand-Response problem. The authors showed the benefits of using regression trees-based approaches to estimate the DR baseline power consumption and how to build auto-regressive trees for DR control strategies evaluation. Moreover, they proposed a model based control strategy using regression trees (mbCRT) to enable control with regression trees and use it for real-time DR strategy synthesis. In particular, mbCRT algorithm can be used to setup optimal control problems with one-step lookahead prediction, for example to trade off thermal comfort inside a building against the amount of load curtailment. However, mbCRT does not allow to setup a receding horizon control problem with arbitrarily horizon length. This drawback limits closed-loop control performance since it does not take into account the very accurate long term state prediction that regression trees can provide. In this paper we overcome this issue providing the following contributions 
-\\
-\begin{itemize}[leftmargin=1cm]
-	\item \emph{Multi-variate output regression trees:} we introduce a novel methodology to construct a multi-variate output predictive model using regression trees, where each output corresponds to the prediction on a future step of the horizon. More precisely, we setup a least square problem that minimize the prediction error over the control horizon. This is done by modifying the variable selection and splitting criteria at the nodes of the regression tree standard algorithm CART \cite{BreimanFriedmanStoneEtAl1984}.
-	\item \emph{Predictive control:} we extend the mbCRT algorithm proposing a Data-driven Predictive Control strategy using Regression Trees (DPCRT), that implements receding horizon control using data-based models learned from the available historical data.
-	\item \emph{Application:} we apply this control strategy to peak power curtailment on a large office building and compare with the previous mbCRT algorithm. Results show a substantial improvement using DPCRT by $8.6\%$ with respect of mbCRT in terms of peak curtailment.\\
+In order to address the aforementioned challenges, we use machine learning algorithms to generate data-driven models for cyber-physical systems where we preserve predictive capability of model-based control but without the expense of first principle or grey-box model development.
+Although machine learning algorithms are a popular choice for predicting systems' behavior, they do not provide models that are suitable for control.
+In our previous work \cite{BehlJainMangharam2016,Behl201630}, we overcome this issue by using regression tree-based algorithms to provide models of system dynamics to be used in an optimal control problem setup.
+%We  discussed the use of regression trees-based approaches to estimate the DR baseline power consumption and to build auto-regressive trees for DR control strategies evaluation.
+%We further showed the procedure to design such a controller for energy management during Demand Response.
+We proposed an algorithm for model-based control using regression trees (mbCRT), and apply it to synthesize real-time DR strategy.
+The mbCRT algorithm can be used to setup optimal control problems with one-step lookahead prediction, for example to trade off thermal comfort inside a building against the amount of load curtailment.
+However, mbCRT cannot be used to setup a receding horizon control problem with an arbitrarily length of the horizon as in MPC. 
+This drawback limits the closed-loop control performance since it does not take into account the very accurate long term state prediction that regression trees can provide. 
+In this paper, we overcome this issue providing the following contributions:
+
+\begin{itemize}[leftmargin=0.5cm]
+	\item \emph{Multi-variate regression trees:} We introduce a methodology to construct a multi-variate or multi-output predictive model using regression trees, where each output corresponds to the prediction on a future step of the horizon. More precisely, we setup a least square problem that minimize the prediction error over the control horizon. This is done by modifying the variable selection and splitting criteria at the nodes of the standard regression tree algorithm CART \cite{BreimanFriedmanStoneEtAl1984}.
+	\item \emph{Predictive control:} We extend the mbCRT algorithm proposing a Data-driven Predictive Control strategy using Regression Trees (DPCRT), that implements receding horizon control using data-based models learned from the available historical data.
+	\item \emph{Application:} We apply this control strategy to peak power curtailment on a large office building and compare with the previous mbCRT algorithm. Our results show an improvement of $8.6\%$ in terms of peak curtailment is obtained using DPCRT with respect to mbCRT.
 \end{itemize}
-Summarizing,} the methodology proposed in this paper bypass the cost and time prohibitive process of building high fidelity models that use grey and white box modeling approaches while still being suitable for receding horizon control. These are the first algorithms of its kind that enable closed-loop control synthesis and finite receding horizon control with regression trees. \textcolor[rgb]{0.00,0.00,1.00}{Paper flow is summarized in Fig. \ref{F:scheme}.}
+In summary, the methodology proposed in this paper bypasses the cost and time prohibitive process of building high fidelity models (using grey and white box approaches) while still being suitable for receding horizon control. 
+%These are the first algorithms of its kind that enable closed-loop control synthesis and finite receding horizon control with regression trees. 
+The contributions of the paper are graphically shown in Fig. \ref{F:scheme}.
 
 \subsection{Related work}
 \label{sec:related}
-\textcolor[rgb]{0.00,0.00,1.00}{In the recent years a lot of attention has been focused on data-driven optimal control and different approaches have been considered.} For example in some works, models are trained on optimal solutions obtained from MPC. The resulting models can then be used for explicit MPC, as in~\cite{BemporadMorariDuaEtAl2002}. This approach has been applied to problems of  stabilization \cite{CavagnariMagniScattolini1999} and freeway traffic systems using regression trees \cite{OleariFrejoCamachoEtAl2015}. 
-Another class of methods solve the optimization directly on the trained models to do predictive control \textcolor[rgb]{0.00,0.00,1.00}{ \cite{Hou2013,Costanzo2016,FerreiraRuanoSilvaEtAl2012}. However, none of them address the problem of including data-driven state models into the optimal predictive control loop, and hence allow to set up a MPC-like optimal control problem. The first results in this sense have been introduced for the first time in \cite{Behl201630}, where the authors proposed MPC-like control problems considering regression tree-based algorithms for the DR problem. In \cite{KusiakSongZheng2009}, instead, neural networks are used to setup a MPC-like control for the wind turbine problem using evolutionary algorithms. Nevertheless, their approaches considered only one-step lookahead predictive model, and hence did not allow predictive control over an arbitrary horizon.}
+In recent years, data-driven optimal control has drawn a huge interest in the research community.
+Several different approaches have been considered. 
+For example, in one approach, models are trained on optimal solutions obtained from MPC. 
+The resulting models can then be used for explicit MPC, as in~\cite{BemporadMorariDuaEtAl2002}. This approach has been applied to problems of stabilization \cite{CavagnariMagniScattolini1999} and freeway traffic systems using regression trees \cite{OleariFrejoCamachoEtAl2015}. 
+In applications like buildings, where obtaining a model for MPC is hard, such techniques cannot be used.
+Another class of methods solve the optimization directly on the trained models to do predictive control \cite{Hou2013,Costanzo2016,FerreiraRuanoSilvaEtAl2012}. 
+However, none of them addresses the problem of including data-driven state models into the optimal predictive control loop. Hence, we cannot solve an MPC-like optimal control problem. 
+In \cite{Behl201630}, we proposed MPC-like control problem considering regression tree-based algorithms for the DR problem. In \cite{KusiakSongZheng2009}, neural networks are used instead to setup an MPC-like control for the wind turbine problem using evolutionary algorithms. Nevertheless, their approaches considered only one-step lookahead predictive model, and hence does not allow predictive control over an arbitrary horizon.
 
-\textcolor[rgb]{1.00,0.00,0.00}{More specifically to the Demand-Response problem, there is a vast amount of literature like (\cite{oldewurtel2013towards,xu2004peak}), which addresses the problem of determining DR strategies. The majority of the approaches are using either rule-based techniques for curtailment or white/grey box model-based control. These lasts usually assume that the model of the system is either perfectly known or found in literature, whereas the task is much more complicated and time consuming in case of a real building and sometimes, it can be even more complex and involved than the controller design itself. After several years of work on using first principles based models for demand response, multiple authors~\cite{costmpc,reallife} have concluded that the biggest hurdle to mass adoption of intelligent building control is the cost and effort required to capture accurate dynamical models of the buildings. There are ongoing efforts to make tuning and identifying white box models of buildings more autonomous~\cite{new2012autotune}. OpenADR standard and protocol~\cite{openadr} describes the formats for information exchange to facilitate DR but modeling, prediction and control strategies are out of scope. Several machine learning approaches~\cite{edwards2012predicting,vaghefi2014modeling,yin2012scalable} have been utilized before for forecasting electricity load including some which use regression trees. However, there are two significant shortcomings of the work in this area: 
+There is a vast literature more specific to the Demand Response which look at the problem of determining DR strategies \cite{oldewurtel2013towards,xu2004peak}. 
+The majority of the approaches are either rule-based techniques for curtailment or white/grey box model-based control. 
+These usually assume that the model of the system is well known whereas the task is much more complicated and time consuming in the case of a real building and sometimes, it can be even more complex and involved than the design of the controller itself. 
+After several years of work on using first principles based models for demand response, multiple authors~\cite{costmpc,reallife} have concluded that the biggest hurdle to mass adoption of intelligent building control is the cost and effort required to capture accurate dynamical models of the buildings. 
+There are ongoing efforts to make tuning and identifying white box models of buildings more autonomous~\cite{new2012autotune}. 
+OpenADR standard and protocol~\cite{openadr} describes the formats for information exchange to facilitate DR but modeling, prediction and control strategies are out of scope. 
+Several machine learning approaches~\cite{edwards2012predicting,vaghefi2014modeling,yin2012scalable} have been utilized before for forecasting electricity load including some which use regression trees. 
+However, there are two significant shortcomings of the work in this area: 
 	\begin{inparaenum}[(a)]
-		\item these approaches are coarse grained and  are not aimed at solving demand response problems but are restricted to long term load forecasting with applications in evaluating building retrofits savings and building energy ratings; 
+		\item these approaches are coarse grained and  are not aimed at solving demand response problems but are restricted to long term load forecasting with applications in evaluating building retrofits savings and building energy ratings, and
 		\item  there is no focus on control synthesis or addressing the suitability of the model to be used in control design. 
 	\end{inparaenum}
-	There exist several different approaches to balance the power consumption in buildings and avoid peaks, e.g. by load shifting and load shedding \cite{KiliccoteEtAl06aca,LeeEtAl08dom}. However, they operate on coarse grained time scales and do not guarantee any thermal comfort.}
+	There exist several different approaches to balance the power consumption in buildings and avoid peaks, e.g. by load shifting and load shedding \cite{KiliccoteEtAl06aca,LeeEtAl08dom}. However, they operate on coarse grained time scales and do not guarantee any thermal comfort.
 
 \begin{figure}[t!]
 	\begin{center}
 		\hspace{0.8cm}
 		\includegraphics[width=0.8\textwidth]{figs/scheme.eps}
 		\centering
-		\caption{Historical data are used to train models for both DPCRT and mbCRT. Such models are used to run closed-loop optimization. Finally, the two approaches are compared.}
+		\caption{Historical data are used to train models for mbCRT in Sec.~\ref{sec:drtree} and DPCRT in Sec.~\ref{sec:decision_tree}. These models are then used in the optimization in a closed-loop with the physical system. Finally, the two approaches are compared in Sec~\ref{sec:case}.}
 		\label{F:scheme}
 		\vspace{-10pt}
 	\end{center}
 \end{figure}
 
-The DPCRT algorithm is first of its kind that does finite receding horizon control with regression trees. It is computationally efficient because the optimization problem is convex and the number of constraints scales linearly with the number of control variables. \textcolor[rgb]{0.00,0.00,1.00}{A preliminary version of this paper can be found in the conference paper \cite{JainBuildsys2016}.}
+The DPCRT algorithm is first of its kind that does finite receding horizon control with regression trees. 
+It is computationally efficient because the optimization problem is convex and the number of constraints scales linearly with the number of control variables. 
+A preliminary version of this paper can be found in the conference paper \cite{JainBuildsys2016}.
 
 \subsection{Paper organization}
 
-\textcolor[rgb]{0.00,0.00,1.00}{This paper is organized as follows. In Sec.~\ref{sec:problem} we describes our problem formulation. In Sec.~\ref{sec:drtree}, we recall the data-driven control strategy proposed in \cite{Behl201630} that will be useful to introduce our new methodology. In Sec.~\ref{sec:decision_tree} we present our main contribution: predictive control using regression trees. In particular, in Sec. \ref{SS:training_algo} we extend the regression trees standard training algorithm, so that we can use it to build predictive models over an horizon of arbitrary length, while in Sec. \ref{SS:control_tree} we use this algorithm to formally build system models and setup a receding horizon optimal control problem that can be used for the closed-loop control. Finally, in Sec. \ref{sec:case} we apply DPCRT to a peak power reduction problem and compare it with mbCRT.}
+This paper is organized as follows. We describe our problem formulation in Sec.~\ref{sec:problem}. 
+Sec.~\ref{sec:drtree} provides an overview of the data-driven control strategy (mbCRT) proposed in \cite{Behl201630} that will be useful to introduce our new methodology. 
+In Sec.~\ref{sec:decision_tree}, we present our main contribution -- predictive control using multi-variate regression trees. 
+In particular, we extend the standard training algorithm for regression trees in Sec. \ref{SS:training_algo} so we can use it to build predictive models over a horizon of arbitrary length. 
+In Sec. \ref{SS:control_tree}, we use the DPCRT algorithm to formally build system models and setup a receding horizon optimal control problem that can be used for the closed-loop control. 
+Finally, in Sec. \ref{sec:case} we apply DPCRT to a peak power reduction problem and compare it with mbCRT.
 

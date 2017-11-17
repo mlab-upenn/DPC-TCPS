@@ -25,7 +25,7 @@
 
 
 \usepackage{hyperref}
-\hypersetup{citecolor=blue, colorlinks=true}
+\hypersetup{citecolor=black, colorlinks=false}
 \usepackage[font=small]{caption}
 \usepackage{cite}
 
@@ -53,38 +53,11 @@
     text width=1.5em, very thick},
 }
 
-%\newcommand{\tableref}[1]{Table~\ref{tab:#1}}
-%\newcommand{\figref}[1]{Fig.~\ref{fig:#1}}
-%\newcommand{\listref}[1]{Listing~\ref{list:#1}}
-% Clever references -- SHOULD BE LOADED LAST
-% Generic commands: \cref and \Cref
-% Seems incompatible with `algorithmic' from algorithms bundle, but can be used with `algorithmicx' (e.g. `algpseudocode').
-%\usepackage[capitalise]{cleveref}
-%\newcommand{\vref}[1]{\cref{#1}}
-% When using \namecref, cleveref capitalizes the first character if the option capitalise is used, which I don't want.  So use \lcnamecref instead.
-
-%\setlength{\textheight}{9.65in}
-\setlength{\textwidth}{6.4in}
-%\setlength{\columnsep}{0.3125in}
-%\setlength{\topmargin}{-.25in}
-%\setlength{\headheight}{-.1in}
-%\setlength{\headsep}{0in}
-%\setlength{\parskip}{0cm}
-%\setlength{\parindent}{1pc}
-%\setlength{\partopsep}{0pt}
-\setlength{\oddsidemargin}{-.005in}
-\setlength{\evensidemargin}{-.005in}
-%
-%\setlength{\abovedisplayskip}{0pt}
-%\setlength{\belowdisplayskip}{0pt}
-%\setlength{\abovedisplayshortskip}{0pt}
-%\setlength{\belowdisplayshortskip}{0pt}
-
-\linespread{0.96}
 %\usepackage{balance}
 \def\u{\mathrm{u}}
 \def\x{\mathrm{x}}
 \def\y{\mathrm{y}}
+
 %\usepackage{etoolbox}
 %\makeatletter
 %\patchcmd{\maketitle}{\@copyrightspace}{}{}{}
@@ -94,11 +67,11 @@
 
 \begin{document}
 % Page heads
-\markboth{A. Jain et al.}{Data-driven Model Predictive Control with Regression Trees \\
+\markboth{A. Jain et al.}{Data-driven Model Predictive Control with Regression Trees -- \\
 	An Application to Building Energy Management}
 
 % Title portion
-\title{Data-driven Model Predictive Control with Regression Trees \\
+\title{Data-driven Model Predictive Control with Regression Trees --\\
 	An Application to Building Energy Management}
 \author{ACHIN JAIN
 \affil{University of Pennsylvania}
@@ -164,9 +137,9 @@ RAHUL MANGHARAM
 
 \begin{bottomstuff}
 Author's addresses: {A. Jain {and} R. Mangharam, Department of Electrical and Systems Engineering,
-University of Pennsylvania; M. Behl,
-Department of Computer Science, University of Virginia; F. Smarra, 
-Department of Information Engineering, Computer Science and Mathematics, Universit\`{a} degli Studi dell'Aquila.}
+University of Pennsylvania; 
+F. Smarra, Department of Information Engineering, Computer Science and Mathematics, Universit\`{a} degli Studi dell'Aquila;
+M. Behl, Department of Computer Science, University of Virginia.}
 \end{bottomstuff}
 
 \maketitle
@@ -183,7 +156,7 @@ Department of Information Engineering, Computer Science and Mathematics, Univers
 \label{sec:drtree}
 \input{DRsynthesis.tex}
 
-\section{DPCRT: Data-based Predictive Control using Regression Trees}
+\section{DPCRT: Data-driven Predictive Control using Regression Trees}
 \label{sec:decision_tree}
 \input{DecisionTrees.tex}
 
