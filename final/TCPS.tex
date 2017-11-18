@@ -90,8 +90,12 @@ RAHUL MANGHARAM
 %       currently affiliated with NASA.
 
 \begin{abstract}
-
-\textcolor[rgb]{0.00,0.00,1.00}{Large-scale cyber-physical systems optimization is one of the most important problems nowadays, therefore the use of optimal control strategies is fundamental. Model Predictive Control (MPC) is a control strategy based on the ability to predict system's behavior, that provides optimal solutions in order to optimize a generic system performance while ensuring system's constraints. For this reason MPC represents the best solution to optimize systems' performance. However, the main bottle neck that does not allow the widespread of predictive control algorithms for complex systems is mainly due to their complexity. This is because the resulting cost and time efforts needed to construct system models, as for example in the case of buildings, is prohibitive. To address this issue, a regression trees-based approach is introduced in this paper. More precisely, a data-driven model predictive control based on regression trees is proposed, which allows to perform closed-loop optimal control synthesis for cyber-physical systems. In this paper, such methodology is used to face the Demand-Response problem in buildings. In particular, it is used to optimally trade off peak power reduction against thermal comfort without having to learn white/grey box models of the systems dynamics.}
+	Model Predictive Control (MPC) plays an important role in optimizing operations of complex cyber-physical systems because of its ability to forecast system's behavior and act under system level constraints.
+	However, MPC requires reasonably accurate underlying models of the system.
+	In many applications like building control for energy management, Demand Response or peak power reduction, obtaining high fidelity physics-based model is cost and time prohibitive, thus limiting the widespread adoption of MPC.
+	To this end, we propose a data-driven control algorithm for MPC that relies only on the historical data.
+	We use multi-output regression trees to represent the system's dynamics over multiple future time steps and formulate a finite receding horizon control problem that can be solved in real-time in closed-loop with the physical plant.
+	We apply this algorithm to peak power reduction in buildings to optimally trade off peak power reduction against thermal comfort without having to learn white/grey box models of the systems dynamics.
 \end{abstract}
 
 

@@ -98,16 +98,27 @@ The key to answering the question of what actions to take to achieve a significa
 In this context, we evaluate the performance of DPCRT for peak power reduction in buildings, and we show the advantages of receding horizon control with regression trees (DPCRT) with respect to the one-step lookahead control (mbCRT). 
 
 As already described, the data samples consist of four types of features, namely weather data, schedule data, building data and autoregressive terms of building power consumption. 
-We use the following three features from the building bata as control variables: zone temperature cooling set point $\mathrm{u}_c$ [$^{\circ}$C], chilled water temperature set point $\mathrm{u}_h$ [$^{\circ}$C], and lighting set point $\mathrm{u}_\ell$ (ranges from $0$ to $1$). Since the power consumption model also depends on the zone temperatures, to have a prediction of the power over the horizon, we first need to predict zone temperatures. To this aim, the following models are built using \eqref{eq:train_model_multi}:
+We use the following three features from the building bata as control variables: zone temperature cooling set point $\mathrm{u}_c$ [$^{\circ}$C], chilled water temperature set point $\mathrm{u}_h$ [$^{\circ}$C], and lighting set point $\mathrm{u}_\ell$ (ranges from $0$ to $1$). Since the power consumption model also depends on the zone temperatures, to have a prediction of the power over the horizon, we first need to predict zone temperatures. To this aim, we built two kind of trees with output as power and zone temperature (one for each zone). In the leaf of each tree, we further have three kinds of models as described below.
 \begin{itemize}[leftmargin=0.5cm]
-	\item $P_j^c$ - Power consumption model at time $j$ due to $\mathrm{u}_c$. The tree is learned using all the features except for the inputs. Only $\mathrm{u}_c$ have been used to fit the linear model in the leaves.
-	\item $P_j^h$ - Power consumption model at time $j$ due to $\mathrm{u}_h$. The tree is learned using all the features except for the inputs. Only $\mathrm{u}_h$ have been used to fit the linear model in the leaves.
-	\item $P_j^\ell$ - Power consumption model at time $j$ due to $\mathrm{u}_\ell$. The tree is learned using all the features except for the inputs. Only $\mathrm{u}_\ell$ have been used to fit the linear model in the leaves.
-	\item $T_{i,j}^c$ - Temperature model of the $i^{th}$ room at time $j$ due to $\mathrm{u}_c$. The tree is learned using all the features except for the inputs and except for the room temperatures $r,\ \forall r\neq i$. Only $\mathrm{u}_c$ have been used to fit the linear model in the leaves.
-	\item $T_{i,j}^h$ - Temperature model of the $i^{th}$ room at time $j$ due to $\mathrm{u}_h$. The tree is learned using all the features except for the inputs and except for the room temperatures $r,\ \forall r\neq i$. Only $\mathrm{u}_h$ have been used to fit the linear model in the leaves.
-	\item $T_{i,j}^\ell$ - Temperature model of the $i^{th}$ room at time $j$ due to $\mathrm{u}_\ell$. The tree is learned using all the featuresexcept for the inputs and except for the room temperatures $r,\ \forall r\neq i$. Only $\mathrm{u}_\ell$ have been used to fit the linear model in the leaves.
+	\item The power tree is learned using all the features except for the inputs. In the leaf of the tree, following linear models are trained:
+\begin{itemize}[leftmargin=0.5cm]
+	\item $P_j^c$ - power consumption at time $j$ due to $\mathrm{u}_c$. 
+	Only $\mathrm{u}_c$ have been used to fit the linear model in the leaves.
+	\item $P_j^h$ - power consumption at time $j$ due to $\mathrm{u}_h$. 
+	Only $\mathrm{u}_h$ have been used to fit the linear model in the leaves.
+	\item $P_j^\ell$ - power consumption at time $j$ due to $\mathrm{u}_\ell$.
+	Only $\mathrm{u}_\ell$ have been used to fit the linear model in the leaves.
 \end{itemize}
-
+\item The temperature tree for the $i^{th}$ zone is learned using all the features except for the inputs and except for the room temperatures $r,\ \forall r\neq i$.
+\begin{itemize}[leftmargin=0.5cm]
+	\item $T_{i,j}^c$ - temperature of the $i^{th}$ zone at time $j$ due to $\mathrm{u}_c$. 
+	Only $\mathrm{u}_c$ have been used to fit the linear model in the leaves.
+	\item $T_{i,j}^h$ - temperature of the $i^{th}$ zone at time $j$ due to $\mathrm{u}_h$. 
+	Only $\mathrm{u}_h$ have been used to fit the linear model in the leaves.
+	\item $T_{i,j}^\ell$ - temperature of the $i^{th}$ zone at time $j$ due to $\mathrm{u}_\ell$. 
+	Only $\mathrm{u}_\ell$ have been used to fit the linear model in the leaves.
+\end{itemize}
+\end{itemize}
 With \(u\) defined as $u=[\u_c,\u_h,\u_\ell]^\top$, we can setup the following DPCRT problem to minimize the peak power consumption
 \begin{align}
 \begin{aligned}
@@ -126,7 +137,7 @@ With \(u\) defined as $u=[\u_c,\u_h,\u_\ell]^\top$, we can setup the following D
 \end{align}
 At time $t$, we solve DPCRT \eqref{eq:DPCRTCaseStudy} and apply only the first input, i.e. $\u_c(t) = \u^*_{c,t}$, $\u_h(t) = \u^*_{h,t}$ and $\u_\ell(t) = \u^*_{\ell,t}$. At $t+1$, we repeat the algorithm with the updated measurements.
 
-We compare DPCRT and mbCRT when simulated in closed-loop with the EnergyPlus model of the building. In order to compare the performance of DPCRT, we consider a scenario in which there is a significant disturbance which is only anticipated $30$ min in advance and leads to a sudden increase in zone temperatures in the building. This maybe due to a sudden spike in the occupancy or equipment being switched ON at a brief notice. Under this scenario, it is important to react to the disturbance in a predictive manner in order to minimize the peak power consumption. This scenario is shown in Fig. \ref{F:scenario}. Between $15:30$ and $16:00$, an enormous spike in the power consumption ($1.5\times$) is expected because of a scheduled operation.
+We compare DPCRT and mbCRT when simulated in closed-loop with the EnergyPlus model of the building. In order to compare the performance of DPCRT, we consider a scenario in which there is a significant disturbance which is only anticipated $30$ min in advance and leads to a sudden increase in zone temperatures in the building. This maybe due to a sudden spike in the occupancy or equipment being switched ON at a brief notice. Under this scenario, it is important to react to the disturbance in a predictive manner in order to minimize the peak power consumption. This scenario is shown in Fig. \ref{F:scenario}. Between $15{:}30$ and $16{:}00$, an enormous spike in the power consumption ($1.5\times$) is expected because of a scheduled operation.
 \begin{figure*}
 	\centering
 	\hspace{1pt}
