@@ -50,6 +50,7 @@ H5.Marker = marker3;
 ylabel('Temperature [$^{\circ}$C]')
 set(gca,'TickLabelInterpreter','latex')
 set(0,'DefaultLineLineWidth',1);
+ylim([5.7,11])
 vline(datenum(ptimevec(13)),'--k','Start');
 % vline(datenum(ptimevec(25)),'--k','End');
 vline(datenum(ptimevec(37)),'--k','End');
@@ -61,5 +62,5 @@ xmin = datenum(ptimevec(1));
 xmax = datenum(ptimevec(end));
 % xlim([xmin, xmax]);
 xlabel('Time of day [hh:mm]');
-ylim([5.7,11])
-print('-depsc2', '-r600', '../Figures/res_control.eps')
+
+print('-depsc2', '-r600', '../Figures/res_cw_control.eps')

@@ -69,4 +69,4 @@ xmax = datenum(ptimevec(end));
 % xlim([xmin, xmax]);
 xlabel('Time of day [hh:mm]');
 ylim([0.5,0.8]);
-print('-depsc2', '-r600', '../Figures/res_control.eps')
+print('-depsc2', '-r600', '../Figures/res_lgt_control.eps')

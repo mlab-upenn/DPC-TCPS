@@ -1,0 +1,18 @@
+There exist several different approaches to balance the power consumption in buildings and avoid peaks, e.g. by load shifting and load shedding \cite{KiliccoteEtAl06aca,LeeEtAl08dom}.
+However, they operate on coarse grained time scales and do not guarantee any thermal comfort.
+%Another popular approach to energy efficient control for commercial buildings and data centers is model predictive control \cite{MaEtAl10mpc,OldewurtelEtAl10rpe}. %,OldewurtelEtAl10eeb
+%In \cite{MaEtAl10mpc} the authors investigated MPC for thermal energy storage in building cooling systems.
+%%Stochastic MPC was used to minimize building's energy consumption in \cite{OldewurtelEtAl10eeb}, while 
+%Peak electricity demand reduction by MPC with real-time pricing was considered in \cite{OldewurtelEtAl10rpe}.
+%These usually assume that the model of the system is either perfectly known or found in literature, whereas the task is much more complicated and time consuming in case of a real building and sometimes, it can be even more complex and involved than the controller design itself.
+%After several years of work on using first principles based models for demand response, multiple authors~\cite{costmpc,reallife} have concluded that the biggest hurdle to mass adoption of intelligent building control is the cost and effort required to capture accurate dynamical models of the buildings.
+
+In data-driven optimal control literature, the models are trained on optimal solutions obtained from MPC. The resulting models can then be used for explicit MPC, as in~\cite{BemporadMorariDuaEtAl2002}. This approach has been applied to problems of  stabilization \cite{CavagnariMagniScattolini1999} and freeway traffic systems using regression trees \cite{OleariFrejoCamachoEtAl2015}. 
+Another class of methods solve nonlinear optimization directly on the trained models to do receding horizon control. This has been done for wind turbine control using evolutionary optimization algorithm \cite{KusiakSongZheng2009}, and for building control using branch and bound search algorithm \cite{FerreiraRuanoSilvaEtAl2012}. 
+
+%Lastly, MPC like cost function can also be used to find weights in the neural networks. This has been demonstrated in \cite{AkessonToivonen2006}. If the NN models are accurate enough, optimal control can offer a good performance, but this comes at an expense of (a) loss in interpretability, and often (b) computationally complexity because the optimization problem is not convex or/and there is a state space explosion.
+
+%Regression trees on the other hand are highly interpretable. In the case of buildings and many other applications, it is important that the models are easily understandable by the facility managers. It helps them to explain why a particular control strategy is chosen, for example. As we have already seen, 
+The DPCRT algorithm is first of its kind that does finite receding horizon control with regression trees. 
+It is computationally efficient because the optimization problem is convex and the number of constraints scales linearly with the number of control variables. 
+%Its simplicity together with accuracy is unmatched to any other algorithm mentioned above.

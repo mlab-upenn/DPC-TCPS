@@ -46,7 +46,11 @@ xlim([xmin, xmax]);
 xlabel('Time of day [hh:mm]');
 set(gca,'TickLabelInterpreter','latex')
 
-hleg = legend([h1, h2, h3], 'mbCRT', 'DPCRT', 'Naive', 'Location','NorthEast');
-set(hleg,'Interpreter', 'LaTex', 'FontSize', fontsize, 'Color', 'w', 'box', 'on');
-
+hleg = legend([h1, h2, h3], 'mbCRT', 'DPCRT', 'Naive', 'Location','NorthOutside');
+% set(hleg,'Interpreter', 'LaTex', 'FontSize', fontsize, 'Color', 'w', 'box', 'off', ...
+%     'orientation', 'horizontal');
+newPosition = [0.4 0.85 0.2 0.2];
+newUnits = 'normalized';
+set(hleg,'Interpreter', 'LaTex', 'FontSize', fontsize, 'Color', 'w', 'box', 'off', ...
+    'Position', newPosition,'Units', newUnits, 'orientation', 'horizontal');
 print('-depsc2', '-r600', '../Figures/res_power.eps')

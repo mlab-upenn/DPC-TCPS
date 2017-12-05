@@ -43,15 +43,15 @@ H6.Color = [0.9290    0.6940    0.1250];
 H6.LineStyle = '-.';
 H6.Marker = marker3;
 
-ylabel('Light Level [-]')
+ylabel('$u_\ell$ [-]')
 set(gca,'TickLabelInterpreter','latex')
 set(0,'DefaultLineLineWidth',1);
 ylim([0.5,0.8]);
 vline(datenum(ptimevec(13)),'--k','Start');
 vline(datenum(ptimevec(37)),'--k','End');
 set(0,'DefaultLineLineWidth',2);
-% hleg = legend( 'mbCRT', 'DPCRT', 'Naive', 'Location', 'southeast');
-% set(hleg,'Interpreter', 'LaTex', 'FontSize', fontsize, 'Color', 'w', 'box', 'on');
+hleg = legend('mbCRT', 'DPCRT', 'Naive', 'Location', 'southeast');
+set(hleg, 'box', 'off');
 datetick('x','HH:MM');
 hold off
 
@@ -84,7 +84,7 @@ marker3 = 'none';
 h3 = plot(ptimevec,yyclg(plotdur), '-.', 'Marker', marker3);
 set(h3, 'Color', [0.9290    0.6940    0.1250]);
 
-ylabel('Temperature [$^{\circ}$C]')
+ylabel('$u_c$ [$^{\circ}$C]')
 set(gca,'TickLabelInterpreter','latex')
 set(0,'DefaultLineLineWidth',1);
 ylim([23.371,29])
@@ -130,14 +130,18 @@ H5.Color = [0.9290    0.6940    0.1250];
 H5.LineStyle = '-.';
 H5.Marker = marker3;
 
-ylabel('Temperature [$^{\circ}$C]')
+ylabel('$u_h$ [$^{\circ}$C]')
 set(gca,'TickLabelInterpreter','latex')
 set(0,'DefaultLineLineWidth',1);
 ylim([5.7,11])
 vline(datenum(ptimevec(13)),'--k','Start');
 vline(datenum(ptimevec(37)),'--k','End');
 set(0,'DefaultLineLineWidth',2);
-hleg = legend('mbCRT', 'DPCRT', 'Naive', 'Location', 'southeast');
-set(hleg,'Interpreter', 'LaTex', 'FontSize', 14, 'Color', 'w', 'box', 'on');
+newPosition = [0.4 0.85 0.2 0.2];
+newUnits = 'normalized';
+set(hleg,'Interpreter', 'LaTex', 'FontSize', fontsize, 'Color', 'w', 'box', 'off', ...
+    'Position', newPosition,'Units', newUnits, 'orientation', 'horizontal');
 datetick('x','HH:MM');
 xlabel('Time of day [hh:mm]');
+
+print('-depsc2', '-r600', '../Figures/res_control.eps')

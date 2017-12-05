@@ -1,0 +1,49 @@
+Our goal is to learn data-driven models for cyber-physical systems starting from the available historical data. 
+We would like to build models that relate the value of the response variables $\mathrm{y}_1,\ldots,\mathrm{y}_p$ with the values of the predictor variables or features $\mathrm{x}_1,\ldots,\mathrm{x}_s$, and that can be used to setup an optimization predictive control problem. 
+For example, in the case of buildings the response variables can be represented by the power consumption or the room temperatures, while the features can be represented by weather data, set-points information and building schedules.
+
+When the dataset has lots of features, as in the case of large buildings, which interact in complicated nonlinear ways, assembling a single global model, such as linear or polynomial regression, can be difficult and lead to poor response predictions. 
+An approach to non-linear regression is to partition the data space into smaller regions $R_i$, where the interactions are more manageable. 
+A regression tree is an example of an algorithm which belongs to the class of recursive partitioning algorithms. 
+The seminal algorithm for learning regression trees is CART as described in~\cite{BreimanFriedmanStoneEtAl1984}. 
+Regression trees-based approaches are our choice to construct data-driven models for cyber-physical systems. 
+The primary reason for this modeling choice is that regression trees are highly interpretable by design. Interpretability is a fundamental desirable quality in any predictive model. 
+Complex predictive models like neural networks, support vector regression \etc go through a long calculation routine and involve too many factors. It is not easy for a human engineer to judge if the operation/decision is correct or not or how it was generated in the first place. 
+For example, building operators are used to operating a system with fixed logic and rules. 
+They tend to prefer models that are more transparent, where it is clear exactly which factors were used to make a particular prediction. 
+At each node of a regression tree, a simple \textit{if this then that} human readable plain text rule is applied to generate a prediction at the leafs, which anyone can easily understand and interpret. 
+Making machine learning algorithms more interpretable is an active area of research, one that is essential for incorporating human centric models in cyber-physical systems.
+
+We want to use such regression trees-based models to setup optimal predictive control strategies as in the classical MPC formulation. 
+The main challenge when dealing with machine learning algorithms is that they do not provide mathematical models that are directly usable for control. 
+To overcome this issue we propose a solution that is based on the \emph{separation of variables}. In particular, given a dataset $(\mathcal{X},\mathcal{Y})$, where $\mathcal{X}=\{\x_1,\ldots,\x_s\}$ is the set of predictor variables (or features) and $\mathcal{Y}=\{\y_1,\ldots,\y_p\}$ is of response variables, we want to use regression trees to learn a model $f_i$ to predict the response $\y_i$ as
+\begin{equation}\label{eq:RTmodel}
+	\y_i=f_i(\x_1,\ldots,\x_s).
+\end{equation}
+
+Given a forecast of the predictor variables $\hat{\x}_i$, we can predict the system response using \eqref{eq:RTmodel}.
+However, when some of the features are control variables, such a model is not suitable for control.
+We denote the set of system inputs by $\mathcal{X}_c$. These are the variables we can manipulate and form a subset of the features set, i.e. $\mathcal{X}_c=\{\mathrm{u}_1,\ldots,\mathrm{u}_m\}\subset\mathcal{X}$. 
+Let $u(t)=[\mathrm{u}_1(t),\ldots,\mathrm{u}_m(t)]$ be the vector of inputs applied to the system at time $t$ to be optimized, $x(t) = [\mathrm{x}_1(t),\ldots,\mathrm{x}_{s-m}(t)]$ be the vector of system variables measured at time $t$, and $y(t) = [\mathrm{y}_1(t),\ldots,\mathrm{y}_{p}(t)]$ be the vector of system response variables at time $t$.
+We want to setup a receding horizon control problem to find the actions that optimize a desired cost function. 
+The model \eqref{eq:RTmodel} is not suitable to solve the following optimal predictive control problem
+\begin{equation}\label{eq:linear_program}
+\begin{aligned}
+& \underset{u_{t+k}\in\mathcal{X}_c}{\text{minimize}} & &  \sum_{k = 0}^{N}{J(y_{t+k},u_{t+k})}  \\
+& \text{subject to }                                  & &  y_{t+k}    =   f(x_{t+k},u_{t+k})     \\
+&                                                     & &  u_{t+k}   \in \mathcal{\bar U}        \\
+&                                                     & &  y_{t+k}   \in \mathcal{\bar Y}        \\
+&                                                     & &  x_{t}      =   x(t)                   \\
+&                                                     & &  k          =   0,\ldots,N,             \\
+\end{aligned}
+\end{equation}
+since the inputs $u$ are the decision variables in the optimization problem, and they are not known a priori to be used as features in \eqref{eq:RTmodel}.
+
+We use \emph{separation of variables} to partition the set of features into two disjoint sets of inputs (or control variables) and disturbances, i.e. the sets of variables we can and can not manipulate, respectively. 
+More precisely, $\mathcal{X} = \mathcal{X}_c\biguplus\mathcal{X}_d$, where $\biguplus$ represents the disjoint union. 
+The regression tree is trained only using the disturbance variables in $\mathcal{X}_d$, so that we can associate to each leaf a model that depends only on the input data. 
+In this way, we can use the forecast of disturbances to predict the system behavior using \eqref{eq:RTmodel}. This procedure provides a modeling framework that allows to solve optimization problem \eqref{eq:linear_program}. 
+In Sec.~\ref{sec:drtree} and \ref{sec:decision_tree}, we show how this is achieved. 
+In particular, in the next section we review the mbCRT algorithm, that uses separation of variables to create a model based on regression trees that can be used to solve optimization problem \eqref{eq:linear_program} for the one-step look ahead case, i.e. only with $N=0$. 
+Then we present a new algorithm based on multi-output regression trees so the optimization problem \eqref{eq:RTmodel} can be solved for an arbitrary $N$. 
+We finally compare in Sec. \ref{sec:case} the performance of the two approaches to show how the long term prediction can improve the system performance.
