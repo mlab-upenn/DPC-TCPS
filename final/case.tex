@@ -40,25 +40,25 @@ We verify the validity of these assumptions in terms of their effect on model ac
 \begin{figure}
 	\subfigure[Building power consumption at time $t$ predicted at time $t$ is denoted by $P(t)$, predicted 10 steps ahead at time $t-10$ is denoted by $P_{t|t-10}$, and predicted 20 steps ahead at time $t-20$ is denoted by $P_{t|t-20}$.]{
 		\centering
-		\includegraphics[width=18pc]{Figures/perf_test.eps}
+		\includegraphics[width=15.7pc]{Figures/perf_test.eps}
 		\label{F:perf_test}
-	}
+	}\hspace{5pt}
 	\subfigure[A comparison of power consumption of the building for two different regression trees. $\mathcal{T}_1$ is trained on all the features while $\mathcal{T}_2$ is trained only on non-manipulated features using separation of variables.]{
 		\centering
-		\includegraphics[width=18pc]{Figures/separation_vars.eps}
+		\includegraphics[width=15.7pc]{Figures/separation_vars.eps}
 		\label{F:separation_vars}
-	}
+	}\hspace{5pt}
 	\subfigure[Model validation for linear regression at the leaves of the tree. The predicted and the actual power consumption are very close.]{
 		\label{F:linear_approx2}
 		\centering
-		\includegraphics[width=18pc]{Figures/error_leaf2_1.eps}
-	}
+		\includegraphics[width=15.7pc]{Figures/error_leaf2_1.eps}
+	}\hspace{5pt}
 	\subfigure[The tree has 703 leaves. For each leaf, a maximum and a minimum difference in prediction of average power consumption over the control horizon $P_{\mathrm{pred}}-P_{\mathrm{real}}$ is calculated from the data points that end up in that leaf.]{
 		\centering
-		\includegraphics[width=18pc]{Figures/error_leaf.eps}
+		\includegraphics[width=15.7pc]{Figures/error_leaf.eps}
 		\captionsetup{justification=centering}
 		\label{F:linear_approx}
-	}
+	}\hspace{5pt}
 	\caption{Model Validation of DPCRT.}
 	\captionsetup{justification=centering}
 \end{figure}
