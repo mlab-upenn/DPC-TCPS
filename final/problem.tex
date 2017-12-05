@@ -39,7 +39,7 @@ The model \eqref{eq:RTmodel} is not suitable to solve the following optimal pred
 \end{equation}
 since the inputs $u$ are the decision variables in the optimization problem, and they are not known a priori to be used as features in \eqref{eq:RTmodel}.
 
-We use \emph{separation of variables}to partition the set of features into two disjoint sets of inputs (or control variables) and disturbances, i.e. the sets of variables we can and can not manipulate, respectively. 
+We use \emph{separation of variables} to partition the set of features into two disjoint sets of inputs (or control variables) and disturbances, i.e. the sets of variables we can and can not manipulate, respectively. 
 More precisely, $\mathcal{X} = \mathcal{X}_c\biguplus\mathcal{X}_d$, where $\biguplus$ represents the disjoint union. 
 The regression tree is trained only using the disturbance variables in $\mathcal{X}_d$, so that we can associate to each leaf a model that depends only on the input data. 
 In this way, we can use the forecast of disturbances to predict the system behavior using \eqref{eq:RTmodel}. This procedure provides a modeling framework that allows to solve optimization problem \eqref{eq:linear_program}. 
